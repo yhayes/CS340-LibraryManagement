@@ -22,9 +22,8 @@ nav a {
     color: #004d26; /* Dark green */
 }
 
-section {
+h2 {
     text-align: center;
-    margin-bottom: 20px;
 }
 
 table {
@@ -43,6 +42,61 @@ th, td {
 th {
     background-color: #007f5f; /* Emerald green */
     color: white;
+}
+
+.crud-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.crud-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.crud-section h2 {
+    text-align: center;
+    color: #007f5f;
+}
+
+form {
+    background: none;
+    border: none;
+    padding: 10px;
+}
+
+/* Align and style input fields */
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #004d26;
+    border-radius: 4px;
+    background-color: #e0f2e0; /* Light green background */
+}
+
+/* Style buttons */
+form button {
+    background-color: #007f5f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: #00593f;
 }
 
 footer {
