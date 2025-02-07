@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Patrons</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        Manage Patrons
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+    </h1>
+
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> |
+        <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
+    </nav>
+
+    <h2>Patron List</h2>
+    <table>
+        <tr>
+            <th>Patron ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Membership Date</th>
+        </tr>
+        <tr><td>1</td><td>Stephanie</td><td>Lee</td><td>2023-01-15</td></tr>
+        <tr><td>2</td><td>Bob</td><td>Elliot</td><td>2022-07-10</td></tr>
+        <tr><td>3</td><td>Charles</td><td>Brown</td><td>2024-02-01</td></tr>
+    </table>
+
+    <div class="crud-container">
+        <div class="crud-section">
+            <h2>Add New Patron</h2>
+            <form>
+                <label>First Name: <input type="text"></label><br>
+                <label>Last Name: <input type="text"></label><br>
+                <label>Membership Date: <input type="date"></label><br>
+                <button type="submit">Add Patron</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Update Patron</h2>
+            <form>
+                <label>Select Patron:
+                    <select>
+                        <option value="1">Stephanie Lee</option>
+                        <option value="2">Bob Elliot</option>
+                        <option value="3">Charles Brown</option>
+                    </select>
+                </label><br>
+                <label>New First Name: <input type="text"></label><br>
+                <label>New Last Name: <input type="text"></label><br>
+                <button type="submit">Update Patron</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Delete Patron</h2>
+            <form>
+                <label>Select Patron:
+                    <select>
+                        <option value="1">Stephanie Lee</option>
+                        <option value="2">Bob Elliot</option>
+                        <option value="3">Charles Brown</option>
+                    </select>
+                </label><br>
+                <button type="submit">Delete Patron</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+    </footer>
+</body>
+</html>

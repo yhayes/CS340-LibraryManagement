@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Loans</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        Manage Loans
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+    </h1>
+
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> |
+        <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
+    </nav>
+
+    <h2>Loan Records</h2>
+    <table>
+        <tr>
+            <th>Loan ID</th>
+            <th>Book Title</th>
+            <th>Patron Name</th>
+            <th>Loan Date</th>
+            <th>Return Date</th>
+        </tr>
+        <tr><td>1</td><td>A Forgotten Rose</td><td>Stephanie Lee</td><td>2024-11-28</td><td>2024-12-29</td></tr>
+        <tr><td>2</td><td>Blue Stripes</td><td>Stephanie Lee</td><td>2024-12-22</td><td>2025-01-02</td></tr>
+        <tr><td>3</td><td>Desert Trails</td><td>Bob Elliot</td><td>2025-01-03</td><td>2025-01-25</td></tr>
+        <tr><td>4</td><td>Desert Trails</td><td>Charles Brown</td><td>2025-01-29</td><td>--</td></tr>
+        <tr><td>5</td><td>Life of John Doe</td><td>Charles Brown</td><td>2025-02-01</td><td>--</td></tr>
+    </table>
+
+    <div class="crud-container">
+        <div class="crud-section">
+            <h2>New Loan</h2>
+            <form>
+                <label>Select Book:
+                    <select>
+                        <option value="1">A Forgotten Rose</option>
+                        <option value="2">Blue Stripes</option>
+                        <option value="3">Desert Trails</option>
+                        <option value="4">Life of John Doe</option>
+                    </select>
+                </label><br>
+                <label>Select Patron:
+                    <select>
+                        <option value="1">Stephanie Lee</option>
+                        <option value="2">Bob Elliot</option>
+                        <option value="3">Charles Brown</option>
+                    </select>
+                </label><br>
+                <label>Loan Date: <input type="date"></label><br>
+                <button type="submit">Add Loan</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Update Loan</h2>
+            <form>
+                <label>Select Loan Record:
+                    <select>
+                        <option value="1">A Forgotten Rose - Stephanie Lee</option>
+                        <option value="2">Blue Stripes - Stephanie Lee</option>
+                        <option value="3">Desert Trails - Bob Elliot</option>
+                        <option value="4">Desert Trails - Charles Brown</option>
+                        <option value="5">Life of John Doe - Charles Brown</option>
+                    </select>
+                </label><br>
+                <label>New Return Date: <input type="date"></label><br>
+                <button type="submit">Update Loan</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Delete Loan</h2>
+            <form>
+                <label>Select Loan Record:
+                    <select>
+                        <option value="1">A Forgotten Rose - Stephanie Lee</option>
+                        <option value="2">Blue Stripes - Stephanie Lee</option>
+                        <option value="3">Desert Trails - Bob Elliot</option>
+                        <option value="4">Desert Trails - Charles Brown</option>
+                        <option value="5">Life of John Doe - Charles Brown</option>
+                    </select>
+                </label><br>
+                <button type="submit">Delete Loan</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+    </footer>
+</body>
+</html>
