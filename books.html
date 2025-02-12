@@ -25,49 +25,32 @@
     <table>
         <tr>
             <th>Book ID</th>
-            <th>Author ID</th>
+            <th>Author</th>
             <th>Title</th>
             <th>Genre</th>
             <th>Year Published</th>
         </tr>
-        <tr><td>1</td><td>1</td><td>A Forgotten Rose</td><td>Romance</td><td>2023</td></tr>
-        <tr><td>2</td><td>2</td><td>Blue Stripes</td><td>Historical Fiction</td><td>1995</td></tr>
-        <tr><td>3</td><td>3</td><td>Desert Trails</td><td>Adventure</td><td>2005</td></tr>
-        <tr><td>4</td><td>3</td><td>Life of John Doe</td><td>Biography</td><td>1980</td></tr>
+        <tr><td>1</td><td>David Smith</td><td>A Forgotten Rose</td><td>Romance</td><td>2023</td></tr>
+        <tr><td>2</td><td>Julia Kim</td><td>Blue Stripes</td><td>Historical Fiction</td><td>1995</td></tr>
+        <tr><td>3</td><td>Mary Johnson</td><td>Desert Trails</td><td>Adventure</td><td>2005</td></tr>
+        <tr><td>4</td><td>Mary Johnson</td><td>Life of John Doe</td><td>Biography</td><td>1980</td></tr>
     </table>
 
     <div class="crud-container">
         <div class="crud-section">
             <h2>Add New Book</h2>
             <form>
-                <label>Title: <input type="text"></label><br>
-                <label>Genre: <input type="text"></label><br>
-                <label>Year Published: <input type="number"></label><br>
+                <label>Title: <input type="text" name="title" required></label><br>
+                <label>Genre: <input type="text" name="genre" required></label><br>
+                <label>Year Published: <input type="number" name="yearPublished" required></label><br>
                 <label>Author:
-                    <select>
+                    <select name="author">
                         <option>David Smith</option>
                         <option>Julia Kim</option>
                         <option>Mary Johnson</option>
                     </select>
                 </label><br>
                 <button type="submit">Add Book</button>
-            </form>
-        </div>
-
-        <div class="crud-section">
-            <h2>Update Book</h2>
-            <form>
-                <label>Book ID: <input type="number"></label><br>
-                <label>New Title: <input type="text"></label><br>
-                <button type="submit">Update Book</button>
-            </form>
-        </div>
-
-        <div class="crud-section">
-            <h2>Delete Book</h2>
-            <form>
-                <label>Book ID: <input type="number"></label><br>
-                <button type="submit">Delete Book</button>
             </form>
         </div>
     </div>
