@@ -7,8 +7,12 @@ const PORT = 5678;
 // Serve static files from the cs340 directory
 app.use(express.static(__dirname));
 
-// Serve index.html explicitly
+// Serve index.html explicitly for both '/' and '/index.html'
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
