@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const PORT = 5616;
+const PORT = 2134;
 
 // Serve static files (HTML, CSS, JS) from the project directory
 app.use(express.static(path.join(__dirname)));
@@ -14,5 +14,5 @@ app.get('/', (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server running at http://flip1.engr.oregonstate.edu:${PORT}/`);
+    console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });
