@@ -44,12 +44,13 @@
                 <label>Genre: <input type="text" name="genre" required></label><br>
                 <label>Year Published: <input type="number" min="1600"></label><br>
                 <label>Author:
-                    <select>
-                        <option value="1">David Smith (1990)</option>
-                        <option value="2">Julia Kim (1971)</option>
-                        <option value="3">Mary Johnson (1950)</option>
+                    <select name="authorID">
+                        <option value="">Unknown Author</option>
+                        <option value="1">David Smith</option>
+                        <option value="2">Julia Kim</option>
+                        <option value="3">Mary Johnson</option>
                     </select>
-                </label><br>
+                </label>
                 <button type="submit">Add Book</button>
             </form>
         </div>
