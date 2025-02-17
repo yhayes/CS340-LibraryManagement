@@ -73,7 +73,7 @@
                         <option value="5">Life of John Doe - Charles Brown</option>
                     </select>
                 </label><br>
-                <label>New Return Date: <input type="date"></label><br>
+                <label>New Return Date: <input type="date" id="returnDate"></label><br>
                 <button type="submit">Update Loan</button>
             </form>
         </div>
@@ -98,5 +98,21 @@
     <footer>
         <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
     </footer>
+
+    <script>
+        document.getElementById("update-loan-form").addEventListener("submit", function(event) {
+            let loanDropdown = document.getElementById("loanDropdown");
+            let selectedOption = loanDropdown.options[loanDropdown.selectedIndex];
+            let loanDate = new Date(selectedOption.getAttribute("data-loandate"));
+            let returnDateInput = document.getElementById("returnDate");
+            let returnDate = new Date(returnDateInput.value);
+
+            if (returnDate < loanDate) {
+                event.preventDefault();
+                alert("Return date cannot be before the loan date.");
+            }
+        });
+    </script>
+
 </body>
 </html>

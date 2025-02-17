@@ -40,9 +40,12 @@
             <form>
                 <label>First Name: <input type="text"></label><br>
                 <label>Last Name: <input type="text"></label><br>
-                <label>Membership Date: <input type="date"></label><br>
+                <label>Membership Date: <input type="date" id="membershipDate" name="membershipDate"></label><br>
                 <button type="submit">Add Patron</button>
             </form>
+            <script>
+                document.getElementById('membershipDate').valueAsDate = new Date();
+            </script>
         </div>
     </div>
 
