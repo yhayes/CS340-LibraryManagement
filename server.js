@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const PORT = 4981;
+const PORT = 4982;
 
 // Serve static files from the cs340 directory
 app.use(express.static(__dirname));
