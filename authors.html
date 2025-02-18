@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Authors</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        Manage Authors
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+    </h1>
+
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> |
+        <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
+    </nav>
+
+    <h2>Author List</h2>
+    <table>
+        <tr>
+            <th>Author ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birth Year</th>
+        </tr>
+        <tr><td>1</td><td>David</td><td>Smith</td><td>1990</td></tr>
+        <tr><td>2</td><td>Julia</td><td>Kim</td><td>1971</td></tr>
+        <tr><td>3</td><td>Mary</td><td>Johnson</td><td>1950</td></tr>
+    </table>
+
+    <div class="crud-container">
+        <div class="crud-section">
+            <h2>Add New Author</h2>
+            <form>
+                <label>First Name: <input type="text"></label><br>
+                <label>Last Name: <input type="text"></label><br>
+                <label>Birth Year: <input type="number" min="1600"></label><br>
+                <button type="submit">Add Author</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+    </footer>
+</body>
+</html>

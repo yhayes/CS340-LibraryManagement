@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Loans</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        Manage Loans
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+    </h1>
+
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> |
+        <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
+    </nav>
+
+    <h2>Loan Records</h2>
+    <table>
+        <tr>
+            <th>Loan ID</th>
+            <th>Book</th>
+            <th>Patron</th>
+            <th>Loan Date</th>
+            <th>Return Date</th>
+        </tr>
+        <tr><td>1</td><td>A Forgotten Rose (2023)</td><td>Stephanie Lee (Joined: 2023-01-15)</td><td>2024-11-28</td><td>2024-12-29</td></tr>
+        <tr><td>2</td><td>Blue Stripes (1995)</td><td>Stephanie Lee (Joined: 2023-01-15)</td><td>2024-12-22</td><td>2025-01-02</td></tr>
+        <tr><td>3</td><td>Desert Trails (2005)</td><td>Bob Elliot (Joined: 2022-07-10)</td><td>2025-01-03</td><td>2025-01-25</td></tr>
+    </table>
+
+    <div class="crud-container">
+        <div class="crud-section">
+            <h2>Add New Loan</h2>
+            <form>
+                <label>Book:
+                    <select>
+                        <option>A Forgotten Rose (2023)</option>
+                        <option>Blue Stripes (1995)</option>
+                        <option>Desert Trails (2005)</option>
+                    </select>
+                </label><br>
+                <label>Patron:
+                    <select>
+                        <option>Stephanie Lee (Joined: 2023-01-15)</option>
+                        <option>Bob Elliot (Joined: 2022-07-10)</option>
+                        <option>Charles Brown (Joined: 2024-02-01)</option>
+                    </select>
+                </label><br>
+                <label>Loan Date: <input type="date"></label><br>
+                <button type="submit">Add Loan</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Update Loan</h2>
+            <form>
+                <label>Select Loan:
+                    <select>
+                        <option value="1">A Forgotten Rose (2023) - Stephanie Lee</option>
+                        <option value="2">Blue Stripes (1995) - Stephanie Lee</option>
+                        <option value="3">Desert Trails (2005) - Bob Elliot</option>
+                    </select>
+                </label><br>
+                <label>New Book:
+                    <select>
+                        <option>A Forgotten Rose (2023)</option>
+                        <option>Blue Stripes (1995)</option>
+                        <option>Desert Trails (2005)</option>
+                    </select>
+                </label><br>
+                <label>New Patron:
+                    <select>
+                        <option>Stephanie Lee (Joined: 2023-01-15)</option>
+                        <option>Bob Elliot (Joined: 2022-07-10)</option>
+                        <option>Charles Brown (Joined: 2024-02-01)</option>
+                    </select>
+                </label><br>
+                <label>New Loan Date: <input type="date"></label><br>
+                <label>New Return Date: <input type="date"></label><br>
+                <button type="submit">Update Loan</button>
+            </form>
+        </div>
+
+        <div class="crud-section">
+            <h2>Delete Loan</h2>
+            <form>
+                <label>Select Loan:
+                    <select>
+                        <option value="1">A Forgotten Rose (2023) - Stephanie Lee</option>
+                        <option value="2">Blue Stripes (1995) - Stephanie Lee</option>
+                        <option value="3">Desert Trails (2005) - Bob Elliot</option>
+                    </select>
+                </label><br>
+                <button type="submit">Delete Loan</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+    </footer>
+</body>
+</html>
