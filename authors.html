@@ -1,66 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Authors</title>
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+</head>
+<body>
     <h1>
-      <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
-      Manage Authors
-      <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
+        Manage Authors
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
     </h1>
 
     <nav>
-      <a href="index.html">Home</a> | <a href="books.html">Books</a> |
-      <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> |
-      <a href="loans.html">Loans</a>
+        <a href="index.html">Home</a> | <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
     </nav>
 
     <h2>Author List</h2>
     <table>
-      <tr>
-        <th>Author ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Birth Year</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>David</td>
-        <td>Smith</td>
-        <td>1990</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Julia</td>
-        <td>Kim</td>
-        <td>1971</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Mary</td>
-        <td>Johnson</td>
-        <td>1950</td>
-      </tr>
+        <thead>
+            <tr>
+                <th>Author ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Year</th>
+            </tr>
+        </thead>
+        <tbody id="authors-table"></tbody>
     </table>
 
     <div class="crud-container">
-      <div class="crud-section">
-        <h2>Add New Author</h2>
-        <form>
-          <label>First Name: <input type="text" /></label><br />
-          <label>Last Name: <input type="text" /></label><br />
-          <label>Birth Year: <input type="number" min="1580" /></label><br />
-          <button type="submit">Add Author</button>
-        </form>
-      </div>
+        <div class="crud-section">
+            <h2>Add New Author</h2>
+            <form id="add-author-form">
+                <label>First Name: <input type="text" name="firstName" required /></label><br />
+                <label>Last Name: <input type="text" name="lastName" required /></label><br />
+                <label>Birth Year: <input type="number" name="birthYear" min="1580" required /></label><br />
+                <button type="submit">Add Author</button>
+            </form>
+        </div>
     </div>
 
     <footer>
-      <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
     </footer>
-  </body>
+
+    <script>
+        // Fetch authors from the backend and update the table
+        function loadAuthors() {
+            fetch('/authors')
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById('authors-table');
+                    table.innerHTML = ''; // Clear existing data
+
+                    data.forEach(author => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${author.authorID}</td>
+                            <td>${author.firstName}</td>
+                            <td>${author.lastName}</td>
+                            <td>${author.birthYear}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading authors:', error));
+        }
+
+        // Handle form submission to add a new author
+        document.getElementById("add-author-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent page reload
+
+            const formData = new FormData(event.target);
+            const authorData = {
+                firstName: formData.get("firstName"),
+                lastName: formData.get("lastName"),
+                birthYear: formData.get("birthYear")
+            };
+
+            fetch("/add-author", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(authorData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Author added successfully!");
+                    loadAuthors(); // Reload the table with the new author
+                    event.target.reset(); // Clear the form
+                } else {
+                    alert("Error adding author: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        // Load authors when the page loads
+        loadAuthors();
+    </script>
+</body>
 </html>

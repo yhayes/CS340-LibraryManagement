@@ -31,14 +31,26 @@ app.get("/books", (req, res) => {
     });
 });
 
-// Retrieve authors for dropdown
-app.get("/authors", (req, res) => {
+// Route for dropdowns (returns only `authorID`, `firstName`, `lastName`)
+app.get("/authors-dropdown", (req, res) => {
     pool.query("SELECT authorID, firstName, lastName FROM Authors", (error, results) => {
+        if (error) {
+            console.error("Error retrieving authors for dropdown:", error);
+            res.status(500).json({ error: "Database error." });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// Route for full authors list (used in `authors.html`)
+app.get("/authors", (req, res) => {
+    pool.query("CALL GetAuthors()", (error, results) => {
         if (error) {
             console.error("Error retrieving authors:", error);
             res.status(500).json({ error: "Database error." });
         } else {
-            res.json(results);
+            res.json(results[0]); // Stored procedures return results in an array
         }
     });
 });
@@ -54,6 +66,24 @@ app.post("/add-book", (req, res) => {
     pool.query(query, [title, genre, yearPublished, authorID || null], (error, results) => {
         if (error) {
             console.error("Error adding book:", error);
+            res.status(500).json({ error: "Database error." });
+        } else {
+            res.json({ success: true });
+        }
+    });
+});
+
+// Add a new author
+app.post("/add-author", (req, res) => {
+    const { firstName, lastName, birthYear } = req.body;
+
+    const query = `
+        INSERT INTO Authors (firstName, lastName, birthYear)
+        VALUES (?, ?, ?)`;
+
+    pool.query(query, [firstName, lastName, birthYear], (error, results) => {
+        if (error) {
+            console.error("Error adding author:", error);
             res.status(500).json({ error: "Database error." });
         } else {
             res.json({ success: true });
