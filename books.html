@@ -1,96 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Books</title>
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+</head>
+<body>
     <h1>
-      <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
-      Manage Books
-      <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
+        Manage Books
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
     </h1>
 
     <nav>
-      <a href="index.html">Home</a> | <a href="books.html">Books</a> |
-      <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> |
-      <a href="loans.html">Loans</a>
+        <a href="index.html">Home</a> | <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
     </nav>
 
     <h2>Book List</h2>
     <table>
-      <tr>
-        <th>Book ID</th>
-        <th>Author</th>
-        <th>Title</th>
-        <th>Genre</th>
-        <th>Year Published</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>David Smith</td>
-        <td>A Forgotten Rose</td>
-        <td>Romance</td>
-        <td>2023</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Julia Kim</td>
-        <td>Blue Stripes</td>
-        <td>Historical Fiction</td>
-        <td>1995</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Mary Johnson</td>
-        <td>Desert Trails</td>
-        <td>Adventure</td>
-        <td>2005</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Mary Johnson</td>
-        <td>Life of John Doe</td>
-        <td>Biography</td>
-        <td>1980</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>NULL</td>
-        <td>Forgotten Poems of Greece</td>
-        <td>History</td>
-        <td>1965</td>
-      </tr>
+        <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Year Published</th>
+            </tr>
+        </thead>
+        <tbody id="books-table"></tbody>
     </table>
 
     <div class="crud-container">
-      <div class="crud-section">
-        <h2>Add New Book</h2>
-        <form>
-          <label>Title: <input type="text" name="title" required /></label
-          ><br />
-          <label>Genre: <input type="text" name="genre" required /></label
-          ><br />
-          <label>Year Published: <input type="number" min="1600" /></label
-          ><br />
-          <label
-            >Author:
-            <select name="authorID">
-              <option value="">Unknown Author</option>
-              <option value="1">David Smith</option>
-              <option value="2">Julia Kim</option>
-              <option value="3">Mary Johnson</option>
-            </select>
-          </label>
-          <button type="submit">Add Book</button>
-        </form>
-      </div>
+        <div class="crud-section">
+            <h2>Add New Book</h2>
+            <form>
+                <label>Title: <input type="text" name="title" required /></label><br />
+                <label>Genre: <input type="text" name="genre" required /></label><br />
+                <label>Year Published: <input type="number" min="1600" /></label><br />
+                <label>Author:
+                    <select name="authorID" id="author-dropdown">
+                        <option value="">Unknown Author</option>
+                    </select>
+                </label>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
     </div>
 
     <footer>
-      <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
     </footer>
-  </body>
+
+    <script>
+        // Fetch books from the backend and update the table
+        fetch('/books')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('books-table');
+                table.innerHTML = ''; // Clear existing data
+
+                data.forEach(book => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${book.bookID}</td>
+                        <td>${book.authorID ? book.authorID : 'Unknown'}</td>
+                        <td>${book.title}</td>
+                        <td>${book.genre}</td>
+                        <td>${book.yearPublished}</td>
+                    `;
+                    table.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error loading books:', error));
+
+        // Fetch authors from the backend and update the dropdown
+        fetch('/authors')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById('author-dropdown');
+
+                data.forEach(author => {
+                    const option = document.createElement('option');
+                    option.value = author.authorID;
+                    option.textContent = `${author.firstName} ${author.lastName}`;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading authors:', error));
+    </script>
+</body>
 </html>
