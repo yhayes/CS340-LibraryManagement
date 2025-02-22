@@ -67,7 +67,7 @@
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${book.bookID}</td>
-                            <td>${book.authorID ? book.authorID : 'Unknown'}</td>
+                            <td>${book.authorName ? book.authorName : 'Unknown'}</td> <!-- FIXED -->
                             <td>${book.title}</td>
                             <td>${book.genre}</td>
                             <td>${book.yearPublished}</td>
@@ -104,7 +104,7 @@
                 title: formData.get("title"),
                 genre: formData.get("genre"),
                 yearPublished: formData.get("yearPublished"),
-                authorID: formData.get("authorID") || null // Handle empty author
+                authorID: formData.get("authorID") || null // FIXED: Convert empty author selection to NULL
             };
 
             fetch("/add-book", {
