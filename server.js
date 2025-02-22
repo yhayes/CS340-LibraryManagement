@@ -121,6 +121,57 @@ app.post("/add-patron", (req, res) => {
   });
 });
 
+// Retrieve all books for loan dropdown
+app.get("/books-dropdown", (req, res) => {
+  pool.query("SELECT bookID, title, yearPublished FROM Books", (error, results) => {
+      if (error) {
+          console.error("Error retrieving books:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// Retrieve all patrons for loan dropdown
+app.get("/patrons-dropdown", (req, res) => {
+  pool.query("SELECT patronID, firstName, lastName, membershipDate FROM Patrons", (error, results) => {
+      if (error) {
+          console.error("Error retrieving patrons:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// Retrieve all loans
+app.get("/loans", (req, res) => {
+  pool.query("CALL GetLoansWithDetails()", (error, results) => {
+      if (error) {
+          console.error("Error retrieving loans:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results[0]);
+      }
+  });
+});
+
+// Add a new loan
+app.post("/add-loan", (req, res) => {
+  const { bookID, patronID, loanDate } = req.body;
+  const query = "INSERT INTO Loans (bookID, patronID, loanDate) VALUES (?, ?, ?)";
+
+  pool.query(query, [bookID, patronID, loanDate], (error, results) => {
+      if (error) {
+          console.error("Error adding loan:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
