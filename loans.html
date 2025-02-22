@@ -32,12 +32,11 @@
                 <th>Return Date</th>
             </tr>
         </thead>
-        <tbody id="loans-table">
-            <!-- This section was previously hardcoded but will now be dynamically populated -->
-        </tbody>
+        <tbody id="loans-table"></tbody>
     </table>
 
     <div class="crud-container">
+        <!-- Add New Loan Section -->
         <div class="crud-section">
             <h2>Add New Loan</h2>
             <form id="add-loan-form">
@@ -55,6 +54,49 @@
 
                 <label>Loan Date: <input type="date" name="loanDate" required></label><br>
                 <button type="submit">Add Loan</button>
+            </form>
+        </div>
+
+        <!-- Update Loan Section -->
+        <div class="crud-section">
+            <h2>Update Loan</h2>
+            <form id="update-loan-form">
+                <label>Select Loan:
+                    <select name="loanID" id="loan-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+
+                <label>New Book:
+                    <select name="newBookID" id="update-book-dropdown">
+                        <option value="">Select a Book</option>
+                    </select>
+                </label><br>
+
+                <label>New Patron:
+                    <select name="newPatronID" id="update-patron-dropdown">
+                        <option value="">Select a Patron</option>
+                    </select>
+                </label><br>
+
+                <label>New Loan Date: <input type="date" name="newLoanDate"></label><br>
+                <label>New Return Date: <input type="date" name="newReturnDate"></label><br>
+
+                <button type="submit">Update Loan</button>
+            </form>
+        </div>
+
+        <!-- Delete Loan Section -->
+        <div class="crud-section">
+            <h2>Delete Loan</h2>
+            <form id="delete-loan-form">
+                <label>Select Loan:
+                    <select name="deleteLoanID" id="delete-loan-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+
+                <button type="submit">Delete Loan</button>
             </form>
         </div>
     </div>
