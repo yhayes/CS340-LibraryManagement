@@ -1,68 +1,67 @@
 const express = require("express");
 const path = require("path");
-const db = require("./db-connector"); // Import the database connection
-
+const pool = require("./db-connector"); // Ensure this is correctly set up
 const app = express();
-const PORT = 4985; // Keep your assigned port
+const PORT = 4985;
 
-// Middleware for JSON & form data
+// Middleware for parsing JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (HTML, CSS, JS)
+// Serve static files from the cs340 directory
 app.use(express.static(__dirname));
 
-// Serve index.html for '/' and '/index.html'
+// Serve index.html explicitly for both '/' and '/index.html'
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/index.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// 📌 Fetch books from the database
+// Retrieve all books with author names
 app.get("/books", (req, res) => {
-  pool.query("CALL GetBooksWithAuthors()", (error, results) => {
-      if (error) {
-          console.error("Error fetching books:", error);
-          res.status(500).send("Error fetching books");
-          return;
-      }
-      res.json(results[0]);
-  });
+    pool.query("CALL GetBooksWithAuthors()", (error, results) => {
+        if (error) {
+            console.error("Error retrieving books:", error);
+            res.status(500).json({ error: "Database error." });
+        } else {
+            res.json(results[0]); // Ensure the correct result set is returned
+        }
+    });
 });
 
-// 📌 Fetch authors for dropdown
+// Retrieve authors for dropdown
 app.get("/authors", (req, res) => {
-  db.query("SELECT authorID, firstName, lastName FROM Authors", (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      res.status(500).send("Database error");
-    } else {
-      res.json(results);
-    }
-  });
+    pool.query("SELECT authorID, firstName, lastName FROM Authors", (error, results) => {
+        if (error) {
+            console.error("Error retrieving authors:", error);
+            res.status(500).json({ error: "Database error." });
+        } else {
+            res.json(results);
+        }
+    });
 });
 
-// 📌 Add a new book
+// Add a new book
 app.post("/add-book", (req, res) => {
-  const { title, genre, yearPublished, authorID } = req.body;
+    const { title, genre, yearPublished, authorID } = req.body;
 
-  const query = "INSERT INTO Books (title, genre, yearPublished, authorID) VALUES (?, ?, ?, ?)";
-  const values = [title, genre, yearPublished, authorID || null]; // Handle null authors
+    const query = `
+        INSERT INTO Books (title, genre, yearPublished, authorID)
+        VALUES (?, ?, ?, ?)`;
 
-  db.query(query, values, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      res.status(500).json({ success: false, error: "Database error" });
-    } else {
-      res.json({ success: true });
-    }
-  });
+    pool.query(query, [title, genre, yearPublished, authorID || null], (error, results) => {
+        if (error) {
+            console.error("Error adding book:", error);
+            res.status(500).json({ error: "Database error." });
+        } else {
+            res.json({ success: true });
+        }
+    });
 });
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server running at http://flip1.engr.oregonstate.edu:${PORT}/`);
+    console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });
