@@ -101,10 +101,10 @@ INSERT INTO Loans (bookID, patronID, loanDate, returnDate) VALUES
    (4, 3, '2025-02-01', NULL);  -- Loan still active
 
 -- -----------------------------------------------------
--- Create Stored Procedure to Retrieve Books with Author Names
+-- Stored Procedure: GetBooksWithAuthors
 -- -----------------------------------------------------
-DELIMITER $$
-
+DROP PROCEDURE IF EXISTS GetBooksWithAuthors;
+DELIMITER //
 CREATE PROCEDURE GetBooksWithAuthors()
 BEGIN
     SELECT Books.bookID,
@@ -115,8 +115,7 @@ BEGIN
     FROM Books
     LEFT JOIN Authors ON Books.authorID = Authors.authorID
     ORDER BY Books.bookID;
-END $$
-
+END //
 DELIMITER ;
 
 -- -----------------------------------------------------
