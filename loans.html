@@ -23,79 +23,75 @@
 
     <h2>Loan Records</h2>
     <table>
-        <tr>
-            <th>Loan ID</th>
-            <th>Book</th>
-            <th>Patron</th>
-            <th>Loan Date</th>
-            <th>Return Date</th>
-        </tr>
-        <tr><td>1</td><td>A Forgotten Rose (2023)</td><td>Stephanie Lee (Joined: 2023-01-15)</td><td>2024-11-28</td><td>2024-12-29</td></tr>
-        <tr><td>2</td><td>Blue Stripes (1995)</td><td>Stephanie Lee (Joined: 2023-01-15)</td><td>2024-12-22</td><td>2025-01-02</td></tr>
-        <tr><td>3</td><td>Desert Trails (2005)</td><td>Bob Elliot (Joined: 2022-07-10)</td><td>2025-01-03</td><td>2025-01-25</td></tr>
+        <thead>
+            <tr>
+                <th>Loan ID</th>
+                <th>Book</th>
+                <th>Patron</th>
+                <th>Loan Date</th>
+                <th>Return Date</th>
+            </tr>
+        </thead>
+        <tbody id="loans-table"></tbody>
     </table>
 
     <div class="crud-container">
+        <!-- Add New Loan Section -->
         <div class="crud-section">
             <h2>Add New Loan</h2>
-            <form>
+            <form id="add-loan-form">
                 <label>Book:
-                    <select>
-                        <option>A Forgotten Rose (2023)</option>
-                        <option>Blue Stripes (1995)</option>
-                        <option>Desert Trails (2005)</option>
+                    <select name="bookID" id="book-dropdown" required>
+                        <option value="">Select a Book</option>
                     </select>
                 </label><br>
+
                 <label>Patron:
-                    <select>
-                        <option>Stephanie Lee (Joined: 2023-01-15)</option>
-                        <option>Bob Elliot (Joined: 2022-07-10)</option>
-                        <option>Charles Brown (Joined: 2024-02-01)</option>
+                    <select name="patronID" id="patron-dropdown" required>
+                        <option value="">Select a Patron</option>
                     </select>
                 </label><br>
-                <label>Loan Date: <input type="date"></label><br>
+
+                <label>Loan Date: <input type="date" name="loanDate" required></label><br>
                 <button type="submit">Add Loan</button>
             </form>
         </div>
 
+        <!-- Update Loan Section -->
         <div class="crud-section">
             <h2>Update Loan</h2>
-            <form>
+            <form id="update-loan-form">
                 <label>Select Loan:
-                    <select>
-                        <option value="1">A Forgotten Rose (2023) - Stephanie Lee</option>
-                        <option value="2">Blue Stripes (1995) - Stephanie Lee</option>
-                        <option value="3">Desert Trails (2005) - Bob Elliot</option>
+                    <select name="loanID" id="loan-dropdown" required>
+                        <option value="">Select Loan</option>
                     </select>
                 </label><br>
+
                 <label>New Book:
-                    <select>
-                        <option>A Forgotten Rose (2023)</option>
-                        <option>Blue Stripes (1995)</option>
-                        <option>Desert Trails (2005)</option>
+                    <select name="newBookID" id="update-book-dropdown">
+                        <option value="">Select a Book</option>
                     </select>
                 </label><br>
+
                 <label>New Patron:
-                    <select>
-                        <option>Stephanie Lee (Joined: 2023-01-15)</option>
-                        <option>Bob Elliot (Joined: 2022-07-10)</option>
-                        <option>Charles Brown (Joined: 2024-02-01)</option>
+                    <select name="newPatronID" id="update-patron-dropdown">
+                        <option value="">Select a Patron</option>
                     </select>
                 </label><br>
-                <label>New Loan Date: <input type="date"></label><br>
-                <label>New Return Date: <input type="date"></label><br>
+
+                <label>New Loan Date: <input type="date" name="newLoanDate"></label><br>
+                <label>New Return Date: <input type="date" name="newReturnDate"></label><br>
                 <button type="submit">Update Loan</button>
             </form>
         </div>
 
+        <!-- Delete Loan Section -->
         <div class="crud-section">
             <h2>Delete Loan</h2>
-            <form>
+            <form id="delete-loan-form">
                 <label>Select Loan:
-                    <select>
-                        <option value="1">A Forgotten Rose (2023) - Stephanie Lee</option>
-                        <option value="2">Blue Stripes (1995) - Stephanie Lee</option>
-                        <option value="3">Desert Trails (2005) - Bob Elliot</option>
+                    <select name="loanID" id="delete-loan-dropdown" required>
+                        <option value="">Select Loan</option>
                     </select>
                 </label><br>
                 <button type="submit">Delete Loan</button>
@@ -106,5 +102,97 @@
     <footer>
         <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
     </footer>
+
+    <script>
+        function loadLoans() {
+            fetch('/loans')
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById('loans-table');
+                    table.innerHTML = '';
+
+                    data.forEach(loan => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${loan.loanID}</td>
+                            <td>${loan.bookTitle}</td>
+                            <td>${loan.patronName}</td>
+                            <td>${loan.loanDate}</td>
+                            <td>${loan.returnDate || 'Not Returned'}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading loans:', error));
+        }
+
+        function loadBooksAndPatrons() {
+            fetch('/books')
+                .then(response => response.json())
+                .then(data => {
+                    const bookDropdown = document.getElementById('book-dropdown');
+                    const updateBookDropdown = document.getElementById('update-book-dropdown');
+                    bookDropdown.innerHTML = '<option value="">Select a Book</option>';
+                    updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
+
+                    data.forEach(book => {
+                        const option = document.createElement('option');
+                        option.value = book.bookID;
+                        option.textContent = `${book.title} (${book.yearPublished})`;
+                        bookDropdown.appendChild(option);
+                        updateBookDropdown.appendChild(option.cloneNode(true));
+                    });
+                });
+
+            fetch('/patrons')
+                .then(response => response.json())
+                .then(data => {
+                    const patronDropdown = document.getElementById('patron-dropdown');
+                    const updatePatronDropdown = document.getElementById('update-patron-dropdown');
+                    patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+                    updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+
+                    data.forEach(patron => {
+                        const option = document.createElement('option');
+                        option.value = patron.patronID;
+                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
+                        patronDropdown.appendChild(option);
+                        updatePatronDropdown.appendChild(option.cloneNode(true));
+                    });
+                });
+        }
+
+        document.getElementById("add-loan-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const loanData = {
+                bookID: formData.get("bookID"),
+                patronID: formData.get("patronID"),
+                loanDate: formData.get("loanDate"),
+            };
+
+            fetch("/add-loan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loanData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan added successfully!");
+                    loadLoans();
+                    event.target.reset();
+                } else {
+                    alert("Error adding loan: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadLoans();
+            loadBooksAndPatrons();
+        });
+    </script>
 </body>
 </html>
