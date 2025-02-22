@@ -101,6 +101,25 @@ INSERT INTO Loans (bookID, patronID, loanDate, returnDate) VALUES
    (4, 3, '2025-02-01', NULL);  -- Loan still active
 
 -- -----------------------------------------------------
+-- Create Stored Procedure to Retrieve Books with Author Names
+-- -----------------------------------------------------
+DELIMITER $$
+
+CREATE PROCEDURE GetBooksWithAuthors()
+BEGIN
+    SELECT Books.bookID,
+           Books.title,
+           Books.genre,
+           Books.yearPublished,
+           COALESCE(CONCAT(Authors.firstName, ' ', Authors.lastName), 'Unknown') AS authorName
+    FROM Books
+    LEFT JOIN Authors ON Books.authorID = Authors.authorID
+    ORDER BY Books.bookID;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;

@@ -23,13 +23,13 @@ app.get("/index.html", (req, res) => {
 
 // 📌 Fetch books from the database
 app.get("/books", (req, res) => {
-  db.query("SELECT * FROM Books", (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      res.status(500).send("Database error");
-    } else {
-      res.json(results);
-    }
+  db.query("CALL GetBooksWithAuthors()", (err, results) => {
+      if (err) {
+          console.error("Database error:", err);
+          res.status(500).send("Database error");
+      } else {
+          res.json(results[0]); // Stored procedure from DDL.sql
+      }
   });
 });
 
