@@ -40,7 +40,7 @@
             <form id="add-patron-form">
                 <label>First Name: <input type="text" name="firstName" required /></label><br>
                 <label>Last Name: <input type="text" name="lastName" required /></label><br>
-                <label>Membership Date: <input type="date" name="membershipDate" required /></label><br>
+                <label>Membership Date: <input type="date" name="membershipDate" id="membershipDate" required /></label><br>
                 <button type="submit">Add Patron</button>
             </form>
         </div>
@@ -49,6 +49,8 @@
     <footer>
         <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
     </footer>
+
+
 
     <script>
         // Fetch patrons from the backend and update the table
@@ -104,6 +106,12 @@
 
         // Load patrons when the page loads
         loadPatrons();
+
+        // Set default membership date to today
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+            document.getElementById("membershipDate").value = today; // Set the input field to today's date
+});
     </script>
 </body>
 </html>
