@@ -36,10 +36,10 @@
     <div class="crud-container">
         <div class="crud-section">
             <h2>Add New Book</h2>
-            <form>
+            <form id="add-book-form">
                 <label>Title: <input type="text" name="title" required /></label><br />
                 <label>Genre: <input type="text" name="genre" required /></label><br />
-                <label>Year Published: <input type="number" min="1600" /></label><br />
+                <label>Year Published: <input type="number" name="yearPublished" min="1600" required /></label><br />
                 <label>Author:
                     <select name="authorID" id="author-dropdown">
                         <option value="">Unknown Author</option>
@@ -56,40 +56,78 @@
 
     <script>
         // Fetch books from the backend and update the table
-        fetch('/books')
-            .then(response => response.json())
-            .then(data => {
-                const table = document.getElementById('books-table');
-                table.innerHTML = ''; // Clear existing data
+        function loadBooks() {
+            fetch('/books')
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById('books-table');
+                    table.innerHTML = ''; // Clear existing data
 
-                data.forEach(book => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${book.bookID}</td>
-                        <td>${book.authorID ? book.authorID : 'Unknown'}</td>
-                        <td>${book.title}</td>
-                        <td>${book.genre}</td>
-                        <td>${book.yearPublished}</td>
-                    `;
-                    table.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error loading books:', error));
+                    data.forEach(book => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${book.bookID}</td>
+                            <td>${book.authorID ? book.authorID : 'Unknown'}</td>
+                            <td>${book.title}</td>
+                            <td>${book.genre}</td>
+                            <td>${book.yearPublished}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading books:', error));
+        }
 
         // Fetch authors from the backend and update the dropdown
-        fetch('/authors')
+        function loadAuthors() {
+            fetch('/authors')
+                .then(response => response.json())
+                .then(data => {
+                    const dropdown = document.getElementById('author-dropdown');
+
+                    data.forEach(author => {
+                        const option = document.createElement('option');
+                        option.value = author.authorID;
+                        option.textContent = `${author.firstName} ${author.lastName}`;
+                        dropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading authors:', error));
+        }
+
+        // Handle form submission to add a new book
+        document.getElementById("add-book-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent page reload
+
+            const formData = new FormData(event.target);
+            const bookData = {
+                title: formData.get("title"),
+                genre: formData.get("genre"),
+                yearPublished: formData.get("yearPublished"),
+                authorID: formData.get("authorID") || null // Handle empty author
+            };
+
+            fetch("/add-book", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookData),
+            })
             .then(response => response.json())
             .then(data => {
-                const dropdown = document.getElementById('author-dropdown');
-
-                data.forEach(author => {
-                    const option = document.createElement('option');
-                    option.value = author.authorID;
-                    option.textContent = `${author.firstName} ${author.lastName}`;
-                    dropdown.appendChild(option);
-                });
+                if (data.success) {
+                    alert("Book added successfully!");
+                    loadBooks(); // Reload the table with the new book
+                    event.target.reset(); // Clear the form
+                } else {
+                    alert("Error adding book: " + data.error);
+                }
             })
-            .catch(error => console.error('Error loading authors:', error));
+            .catch(error => console.error("Error:", error));
+        });
+
+        // Load books and authors when the page loads
+        loadBooks();
+        loadAuthors();
     </script>
 </body>
 </html>

@@ -45,6 +45,23 @@ app.get("/authors", (req, res) => {
   });
 });
 
+// 📌 Add a new book
+app.post("/add-book", (req, res) => {
+  const { title, genre, yearPublished, authorID } = req.body;
+
+  const query = "INSERT INTO Books (title, genre, yearPublished, authorID) VALUES (?, ?, ?, ?)";
+  const values = [title, genre, yearPublished, authorID || null]; // Handle null authors
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ success: false, error: "Database error" });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://flip1.engr.oregonstate.edu:${PORT}/`);
