@@ -3,131 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Loans</title>
+    <title>Manage Patrons</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Manage Loans</h1>
+    <h1>
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        Manage Patrons
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+    </h1>
 
     <nav>
-        <a href="index.html">Home</a> | <a href="books.html">Books</a> | <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> | <a href="loans.html">Loans</a>
+        <a href="index.html">Home</a> |
+        <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> |
+        <a href="patrons.html">Patrons</a> |
+        <a href="loans.html">Loans</a>
     </nav>
 
-    <h2>Loan Records</h2>
+    <h2>Patron List</h2>
     <table>
         <thead>
             <tr>
-                <th>Loan ID</th>
-                <th>Book</th>
-                <th>Patron</th>
-                <th>Loan Date</th>
+                <th>Patron ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Membership Date</th>
             </tr>
         </thead>
-        <tbody id="loans-table"></tbody>
+        <tbody id="patrons-table"></tbody>
     </table>
 
-    <div>
-        <h2>Add New Loan</h2>
-        <form id="add-loan-form">
-            <label>Book:
-                <select name="bookID" id="book-dropdown">
-                    <option value="">Select a Book</option>
-                </select>
-            </label><br>
-            <label>Patron:
-                <select name="patronID" id="patron-dropdown">
-                    <option value="">Select a Patron</option>
-                </select>
-            </label><br>
-            <label>Loan Date: <input type="date" name="loanDate" required /></label><br>
-            <button type="submit">Add Loan</button>
-        </form>
+    <div class="crud-container">
+        <div class="crud-section">
+            <h2>Add New Patron</h2>
+            <form id="add-patron-form">
+                <label>First Name: <input type="text" name="firstName" required /></label><br>
+                <label>Last Name: <input type="text" name="lastName" required /></label><br>
+                <label>Membership Date: <input type="date" name="membershipDate" id="membershipDate" required /></label><br>
+                <button type="submit">Add Patron</button>
+            </form>
+        </div>
     </div>
 
+    <footer>
+        <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
+    </footer>
+
+
+
     <script>
-        function loadLoans() {
-            fetch('/loans')
+        // Fetch patrons from the backend and update the table
+        function loadPatrons() {
+            fetch('/patrons')
                 .then(response => response.json())
                 .then(data => {
-                    const table = document.getElementById('loans-table');
-                    table.innerHTML = '';
+                    const table = document.getElementById('patrons-table');
+                    table.innerHTML = ''; // Clear existing data
 
-                    data.forEach(loan => {
+                    data.forEach(patron => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${loan.loanID}</td>
-                            <td>${loan.bookTitle}</td>
-                            <td>${loan.patronName}</td>
-                            <td>${loan.loanDate}</td>
+                            <td>${patron.patronID}</td>
+                            <td>${patron.firstName}</td>
+                            <td>${patron.lastName}</td>
+                            <td>${patron.membershipDate}</td>
                         `;
                         table.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error loading loans:', error));
-        }
-
-        function loadBooks() {
-            fetch('/books-dropdown')
-                .then(response => response.json())
-                .then(data => {
-                    const dropdown = document.getElementById('book-dropdown');
-                    data.forEach(book => {
-                        const option = document.createElement('option');
-                        option.value = book.bookID;
-                        option.textContent = `${book.title} (${book.yearPublished})`;
-                        dropdown.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error loading books:', error));
-        }
-
-        function loadPatrons() {
-            fetch('/patrons-dropdown')
-                .then(response => response.json())
-                .then(data => {
-                    const dropdown = document.getElementById('patron-dropdown');
-                    data.forEach(patron => {
-                        const option = document.createElement('option');
-                        option.value = patron.patronID;
-                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
-                        dropdown.appendChild(option);
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
         }
 
-        document.getElementById("add-loan-form").addEventListener("submit", function (event) {
-            event.preventDefault();
+        // Handle form submission to add a new patron
+        document.getElementById("add-patron-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent page reload
 
             const formData = new FormData(event.target);
-            const loanData = {
-                bookID: formData.get("bookID"),
-                patronID: formData.get("patronID"),
-                loanDate: formData.get("loanDate")
+            const patronData = {
+                firstName: formData.get("firstName"),
+                lastName: formData.get("lastName"),
+                membershipDate: formData.get("membershipDate"),
             };
 
-            fetch("/add-loan", {
+            fetch("/add-patron", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loanData),
+                body: JSON.stringify(patronData),
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Loan added successfully!");
-                    loadLoans();
-                    event.target.reset();
+                    alert("Patron added successfully!");
+                    loadPatrons(); // Reload the table with the new patron
+                    event.target.reset(); // Clear the form
                 } else {
-                    alert("Error adding loan: " + data.error);
+                    alert("Error adding patron: " + data.error);
                 }
             })
             .catch(error => console.error("Error:", error));
         });
 
-        loadLoans();
-        loadBooks();
+        // Load patrons when the page loads
         loadPatrons();
+
+        // Set default membership date to today
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+            document.getElementById("membershipDate").value = today; // Set the input field to today's date
+});
     </script>
 </body>
 </html>
-
