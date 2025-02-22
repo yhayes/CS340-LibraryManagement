@@ -121,6 +121,18 @@ app.post("/add-patron", (req, res) => {
   });
 });
 
+// Retrieve all loans with book and patron details
+app.get("/loans", (req, res) => {
+  pool.query("CALL GetLoansWithDetails()", (error, results) => {
+      if (error) {
+          console.error("Error retrieving loans:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results[0]); // Stored procedures return results in an array
+      }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
