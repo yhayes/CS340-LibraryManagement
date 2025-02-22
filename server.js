@@ -91,6 +91,36 @@ app.post("/add-author", (req, res) => {
     });
 });
 
+// Retrieve all patrons
+app.get("/patrons", (req, res) => {
+  pool.query("CALL GetPatrons()", (error, results) => {
+      if (error) {
+          console.error("Error retrieving patrons:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results[0]); // Stored procedures return results in an array
+      }
+  });
+});
+
+// Add a new patron
+app.post("/add-patron", (req, res) => {
+  const { firstName, lastName, membershipDate } = req.body;
+
+  const query = `
+      INSERT INTO Patrons (firstName, lastName, membershipDate)
+      VALUES (?, ?, ?)`;
+
+  pool.query(query, [firstName, lastName, membershipDate], (error, results) => {
+      if (error) {
+          console.error("Error adding patron:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);

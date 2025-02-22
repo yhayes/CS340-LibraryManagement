@@ -130,6 +130,17 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: GetPatrons
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS GetPatrons;
+DELIMITER //
+CREATE PROCEDURE GetPatrons()
+BEGIN
+    SELECT patronID, firstName, lastName, membershipDate FROM Patrons ORDER BY patronID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
