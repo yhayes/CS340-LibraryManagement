@@ -160,6 +160,25 @@ BEGIN
     ORDER BY Loans.loanID;
 END //
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: GetLoanDetailsByID
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS GetLoanDetailsByID;
+DELIMITER //
+
+CREATE PROCEDURE GetLoanDetailsByID(IN loanIDParam INT)
+BEGIN
+    SELECT Loans.loanID, Loans.bookID, Loans.patronID, Loans.loanDate, Loans.returnDate,
+           Books.title AS bookTitle, Books.yearPublished,
+           CONCAT(Patrons.firstName, ' ', Patrons.lastName) AS patronName
+    FROM Loans
+    JOIN Books ON Loans.bookID = Books.bookID
+    JOIN Patrons ON Loans.patronID = Patrons.patronID
+    WHERE Loans.loanID = loanIDParam;
+END //
+
+DELIMITER ;
 -- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------

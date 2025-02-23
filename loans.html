@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Loans</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <h1>
-        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
         Manage Loans
-        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon">
+        <img src="emerald.png" alt="Emerald Icon" class="emerald-icon" />
     </h1>
 
     <nav>
-        <a href="index.html">Home</a> |
-        <a href="books.html">Books</a> |
-        <a href="authors.html">Authors</a> |
-        <a href="patrons.html">Patrons</a> |
+        <a href="index.html">Home</a> | <a href="books.html">Books</a> |
+        <a href="authors.html">Authors</a> | <a href="patrons.html">Patrons</a> |
         <a href="loans.html">Loans</a>
     </nav>
 
@@ -36,23 +34,23 @@
     </table>
 
     <div class="crud-container">
-        <!-- Add New Loan Section -->
+        <!-- Add Loan Section -->
         <div class="crud-section">
             <h2>Add New Loan</h2>
             <form id="add-loan-form">
                 <label>Book:
-                    <select name="bookID" id="book-dropdown" required>
+                    <select name="bookID" id="book-dropdown">
                         <option value="">Select a Book</option>
                     </select>
-                </label><br>
-
+                </label><br />
                 <label>Patron:
-                    <select name="patronID" id="patron-dropdown" required>
+                    <select name="patronID" id="patron-dropdown">
                         <option value="">Select a Patron</option>
                     </select>
-                </label><br>
-
-                <label>Loan Date: <input type="date" name="loanDate" required></label><br>
+                </label><br />
+                <label>Loan Date:
+                    <input type="date" name="loanDate" id="loan-date" required />
+                </label><br />
                 <button type="submit">Add Loan</button>
             </form>
         </div>
@@ -62,26 +60,26 @@
             <h2>Update Loan</h2>
             <form id="update-loan-form">
                 <label>Select Loan:
-                    <select name="loanID" id="loan-dropdown" required>
+                    <select name="loanID" id="loan-dropdown">
                         <option value="">Select a Loan</option>
                     </select>
-                </label><br>
-
+                </label><br />
                 <label>New Book:
                     <select name="newBookID" id="update-book-dropdown">
                         <option value="">Select a Book</option>
                     </select>
-                </label><br>
-
+                </label><br />
                 <label>New Patron:
                     <select name="newPatronID" id="update-patron-dropdown">
                         <option value="">Select a Patron</option>
                     </select>
-                </label><br>
-
-                <label>New Loan Date: <input type="date" name="newLoanDate"></label><br>
-                <label>New Return Date: <input type="date" name="newReturnDate"></label><br>
-
+                </label><br />
+                <label>New Loan Date:
+                    <input type="date" name="newLoanDate" id="update-loan-date" />
+                </label><br />
+                <label>New Return Date:
+                    <input type="date" name="newReturnDate" id="update-return-date" />
+                </label><br />
                 <button type="submit">Update Loan</button>
             </form>
         </div>
@@ -91,11 +89,10 @@
             <h2>Delete Loan</h2>
             <form id="delete-loan-form">
                 <label>Select Loan:
-                    <select name="deleteLoanID" id="delete-loan-dropdown" required>
+                    <select name="loanID" id="delete-loan-dropdown">
                         <option value="">Select a Loan</option>
                     </select>
-                </label><br>
-
+                </label><br />
                 <button type="submit">Delete Loan</button>
             </form>
         </div>
@@ -106,92 +103,93 @@
     </footer>
 
     <script>
+        // Fetch loans from the backend and update the table
         function loadLoans() {
             fetch('/loans')
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('loans-table');
-                    table.innerHTML = ""; // Clear existing data
+                    table.innerHTML = ''; // Clear existing data
 
                     data.forEach(loan => {
-                        const row = document.createElement("tr");
+                        const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
-                            <td>${loan.bookTitle}</td>
-                            <td>${loan.patronName}</td>
+                            <td>${loan.bookTitle} (${loan.yearPublished})</td>
+                            <td>${loan.patronName} (Joined: ${loan.membershipDate})</td>
                             <td>${loan.loanDate}</td>
-                            <td>${loan.returnDate || 'Not Returned'}</td>
+                            <td>${loan.returnDate ? loan.returnDate : "Not Returned"}</td>
                         `;
                         table.appendChild(row);
                     });
                 })
-                .catch(error => console.error("Error loading loans:", error));
+                .catch(error => console.error('Error loading loans:', error));
         }
 
-        function loadBooks() {
-            fetch('/books-dropdown')
+        // Fetch books and patrons for the dropdowns
+        function loadDropdowns() {
+            fetch('/books')
                 .then(response => response.json())
                 .then(data => {
                     const bookDropdown = document.getElementById('book-dropdown');
+                    const updateBookDropdown = document.getElementById('update-book-dropdown');
                     bookDropdown.innerHTML = '<option value="">Select a Book</option>';
+                    updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
+
                     data.forEach(book => {
                         const option = document.createElement('option');
                         option.value = book.bookID;
                         option.textContent = `${book.title} (${book.yearPublished})`;
                         bookDropdown.appendChild(option);
+                        updateBookDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading books:', error));
-        }
 
-        function loadPatrons() {
-            fetch('/patrons-dropdown')
+            fetch('/patrons')
                 .then(response => response.json())
                 .then(data => {
                     const patronDropdown = document.getElementById('patron-dropdown');
+                    const updatePatronDropdown = document.getElementById('update-patron-dropdown');
                     patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+                    updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+
                     data.forEach(patron => {
                         const option = document.createElement('option');
                         option.value = patron.patronID;
                         option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
                         patronDropdown.appendChild(option);
+                        updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
         }
 
-        document.getElementById("add-loan-form").addEventListener("submit", function (event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const loanData = {
-                bookID: formData.get("bookID"),
-                patronID: formData.get("patronID"),
-                loanDate: formData.get("loanDate"),
-            };
+        // Fetch loans for the update and delete dropdowns
+        function loadLoanDropdowns() {
+            fetch('/loans')
+                .then(response => response.json())
+                .then(data => {
+                    const loanDropdown = document.getElementById('loan-dropdown');
+                    const deleteLoanDropdown = document.getElementById('delete-loan-dropdown');
+                    loanDropdown.innerHTML = '<option value="">Select a Loan</option>';
+                    deleteLoanDropdown.innerHTML = '<option value="">Select a Loan</option>';
 
-            fetch("/add-loan", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loanData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Loan added successfully!");
-                    loadLoans();
-                    event.target.reset();
-                } else {
-                    alert("Error adding loan: " + data.error);
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
+                    data.forEach(loan => {
+                        const option = document.createElement('option');
+                        option.value = loan.loanID;
+                        option.textContent = `${loan.bookTitle} (${loan.yearPublished}) - ${loan.patronName}`;
+                        loanDropdown.appendChild(option);
+                        deleteLoanDropdown.appendChild(option.cloneNode(true));
+                    });
+                })
+                .catch(error => console.error('Error loading loans for dropdowns:', error));
+        }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadLoans();
-            loadBooks();
-            loadPatrons();
-        });
+        // Load data when the page loads
+        loadLoans();
+        loadDropdowns();
+        loadLoanDropdowns();
     </script>
 </body>
 </html>

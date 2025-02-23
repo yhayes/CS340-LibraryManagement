@@ -94,6 +94,22 @@ app.get("/loans", (req, res) => {
     });
 });
 
+// Fetch details of a single loan by loanID using stored procedure
+app.get("/loan/:loanID", (req, res) => {
+  const loanID = req.params.loanID;
+
+  pool.query("CALL GetLoanDetailsByID(?)", [loanID], (error, results) => {
+      if (error) {
+          console.error("Error fetching loan details:", error);
+          res.status(500).json({ error: "Database error." });
+      } else if (results[0].length === 0) {
+          res.status(404).json({ error: "Loan not found." });
+      } else {
+          res.json(results[0][0]); // Extract the first result
+      }
+  });
+});
+
 //  Add a new book
 app.post("/add-book", (req, res) => {
     const { title, genre, yearPublished, authorID } = req.body;
