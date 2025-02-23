@@ -146,6 +146,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS GetLoansWithDetails;
 DELIMITER //
+
 CREATE PROCEDURE GetLoansWithDetails()
 BEGIN
     SELECT
@@ -153,12 +154,13 @@ BEGIN
         CONCAT(Books.title, ' (', Books.yearPublished, ')') AS bookTitle,
         CONCAT(Patrons.firstName, ' ', Patrons.lastName, ' (Joined: ', Patrons.membershipDate, ')') AS patronName,
         Loans.loanDate,
-        Loans.returnDate
+        IFNULL(Loans.returnDate, 'Not Returned') AS returnDate
     FROM Loans
     JOIN Books ON Loans.bookID = Books.bookID
     JOIN Patrons ON Loans.patronID = Patrons.patronID
     ORDER BY Loans.loanID;
 END //
+
 DELIMITER ;
 
 -- -----------------------------------------------------

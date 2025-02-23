@@ -84,14 +84,14 @@ app.get("/patrons-dropdown", (req, res) => {
 
 //  Retrieve all loans with book and patron details
 app.get("/loans", (req, res) => {
-    pool.query("CALL GetLoansWithDetails()", (error, results) => {
-        if (error) {
-            console.error("Error retrieving loans:", error);
-            res.status(500).json({ error: "Database error." });
-        } else {
-            res.json(results[0]);
-        }
-    });
+  pool.query("CALL GetLoansWithDetails()", (error, results) => {
+      if (error) {
+          console.error("Error retrieving loans:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json(results[0]);
+      }
+  });
 });
 
 // Fetch details of a single loan by loanID using stored procedure

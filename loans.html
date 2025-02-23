@@ -115,8 +115,8 @@
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
-                            <td>${loan.bookTitle} (${loan.yearPublished})</td>
-                            <td>${loan.patronName} (Joined: ${loan.membershipDate})</td>
+                            <td>${loan.bookTitle}</td>
+                            <td>${loan.patronName}</td>
                             <td>${loan.loanDate}</td>
                             <td>${loan.returnDate ? loan.returnDate : "Not Returned"}</td>
                         `;
@@ -139,7 +139,7 @@
                     data.forEach(book => {
                         const option = document.createElement('option');
                         option.value = book.bookID;
-                        option.textContent = `${book.title} (${book.yearPublished})`;
+                        option.textContent = book.bookTitle;  // Uses the formatted book title from SQL
                         bookDropdown.appendChild(option);
                         updateBookDropdown.appendChild(option.cloneNode(true));
                     });
@@ -157,7 +157,7 @@
                     data.forEach(patron => {
                         const option = document.createElement('option');
                         option.value = patron.patronID;
-                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
+                        option.textContent = patron.patronName;  // Uses the formatted patron name from SQL
                         patronDropdown.appendChild(option);
                         updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
@@ -178,7 +178,7 @@
                     data.forEach(loan => {
                         const option = document.createElement('option');
                         option.value = loan.loanID;
-                        option.textContent = `${loan.bookTitle} (${loan.yearPublished}) - ${loan.patronName}`;
+                        option.textContent = `${loan.bookTitle} - ${loan.patronName}`;
                         loanDropdown.appendChild(option);
                         deleteLoanDropdown.appendChild(option.cloneNode(true));
                     });
@@ -191,5 +191,6 @@
         loadDropdowns();
         loadLoanDropdowns();
     </script>
+
 </body>
 </html>
