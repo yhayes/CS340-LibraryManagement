@@ -132,16 +132,13 @@
                 .then(response => response.json())
                 .then(data => {
                     const bookDropdown = document.getElementById('book-dropdown');
-                    const updateBookDropdown = document.getElementById('update-book-dropdown');
                     bookDropdown.innerHTML = '<option value="">Select a Book</option>';
-                    updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
 
                     data.forEach(book => {
                         const option = document.createElement('option');
                         option.value = book.bookID;
                         option.textContent = `${book.title} (${book.yearPublished})`;
                         bookDropdown.appendChild(option);
-                        updateBookDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading books:', error));
@@ -150,16 +147,13 @@
                 .then(response => response.json())
                 .then(data => {
                     const patronDropdown = document.getElementById('patron-dropdown');
-                    const updatePatronDropdown = document.getElementById('update-patron-dropdown');
                     patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
-                    updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
 
                     data.forEach(patron => {
                         const option = document.createElement('option');
                         option.value = patron.patronID;
                         option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
                         patronDropdown.appendChild(option);
-                        updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
