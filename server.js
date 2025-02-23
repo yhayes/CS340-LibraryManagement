@@ -199,6 +199,21 @@ app.post("/update-loan-date", (req, res) => {
   });
 });
 
+// Update the return date
+app.post("/update-return-date", (req, res) => {
+  const { loanID, newReturnDate } = req.body;
+  const query = "CALL UpdateReturnDate(?, ?)";
+
+  pool.query(query, [loanID, newReturnDate], (error, results) => {
+      if (error) {
+          console.error("Error updating return date:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });

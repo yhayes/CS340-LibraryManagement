@@ -355,6 +355,33 @@
             .catch(error => console.error("Error:", error));
         });
 
+        document.getElementById("update-return-date-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newReturnDate: formData.get("newReturnDate")
+            };
+
+            fetch("/update-return-date", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Return date updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating return date: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
         // Initialize everything when the page loads
         document.addEventListener("DOMContentLoaded", refreshData);
     </script>

@@ -201,6 +201,19 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: UpdateReturnDate
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateReturnDate;
+DELIMITER //
+CREATE PROCEDURE UpdateReturnDate(IN p_loanID INT, IN p_newReturnDate DATE)
+BEGIN
+    UPDATE Loans
+    SET returnDate = p_newReturnDate
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
