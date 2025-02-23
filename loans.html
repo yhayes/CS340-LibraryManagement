@@ -174,15 +174,8 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('book-dropdown').innerHTML = '<option value="">Select a Book</option>';
-                    document.getElementById('update-book-dropdown').innerHTML = '<option value="">Select a Book</option>';
-
                     data.forEach(book => {
-                        const option = document.createElement('option');
-                        option.value = book.bookID;
-                        option.textContent = `${book.title} (${book.yearPublished})`;
-
-                        document.getElementById('book-dropdown').appendChild(option);
-                        document.getElementById('update-book-dropdown').appendChild(option.cloneNode(true));
+                        document.getElementById('book-dropdown').innerHTML += `<option value="${book.bookID}">${book.title} (${book.yearPublished})</option>`;
                     });
                 })
                 .catch(error => console.error('Error loading books:', error));
@@ -193,19 +186,40 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('patron-dropdown').innerHTML = '<option value="">Select a Patron</option>';
-                    document.getElementById('update-patron-dropdown').innerHTML = '<option value="">Select a Patron</option>';
-
                     data.forEach(patron => {
-                        const option = document.createElement('option');
-                        option.value = patron.patronID;
-                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
-
-                        document.getElementById('patron-dropdown').appendChild(option);
-                        document.getElementById('update-patron-dropdown').appendChild(option.cloneNode(true));
+                        document.getElementById('patron-dropdown').innerHTML += `<option value="${patron.patronID}">${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})</option>`;
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
         }
+
+        document.getElementById("add-loan-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent page reload
+
+            const formData = new FormData(event.target);
+            const loanData = {
+                bookID: formData.get("bookID"),
+                patronID: formData.get("patronID"),
+                loanDate: formData.get("loanDate"),
+            };
+
+            fetch("/add-loan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loanData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan added successfully!");
+                    loadLoans(); // Reload table
+                    event.target.reset(); // Clear form
+                } else {
+                    alert("Error adding loan: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
 
         document.addEventListener("DOMContentLoaded", function () {
             loadLoans();
