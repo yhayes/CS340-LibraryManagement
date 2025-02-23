@@ -199,6 +199,35 @@
                 .catch(error => console.error('Error loading patrons:', error));
         }
 
+        function loadLoanDropdowns() {
+    fetch('/loans')
+        .then(response => response.json())
+        .then(data => {
+            // Get all loan dropdown elements
+            const loanDropdowns = [
+                document.getElementById('update-book-loan-dropdown'),
+                document.getElementById('update-patron-loan-dropdown'),
+                document.getElementById('update-loan-date-dropdown'),
+                document.getElementById('update-return-date-dropdown'),
+                document.getElementById('delete-loan-dropdown')
+            ];
+
+            // Populate each dropdown
+            loanDropdowns.forEach(dropdown => {
+                if (dropdown) {
+                    dropdown.innerHTML = '<option value="">Select a Loan</option>';
+                    data.forEach(loan => {
+                        const option = document.createElement('option');
+                        option.value = loan.loanID;
+                        option.textContent = `Loan #${loan.loanID}: ${loan.bookTitle} - ${loan.patronName}`;
+                        dropdown.appendChild(option);
+                    });
+                }
+            });
+        })
+        .catch(error => console.error('Error loading loan dropdowns:', error));
+}
+
         document.getElementById("add-loan-form").addEventListener("submit", function (event) {
             event.preventDefault();
             const formData = new FormData(event.target);
@@ -226,11 +255,40 @@
             .catch(error => console.error("Error:", error));
         });
 
+        document.getElementById("update-book-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newBookID: formData.get("newBookID")
+            };
+
+            fetch("/update-loan-book", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan book updated successfully!");
+                    loadLoans(); // Reload the main loans table
+                    event.target.reset(); // Clear the form
+                } else {
+                    alert("Error updating loan book: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             loadLoans();
             loadBooks();
             loadPatrons();
+            loadLoanDropdowns
         });
+
     </script>
 </body>
 </html>

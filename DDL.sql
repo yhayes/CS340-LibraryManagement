@@ -160,6 +160,20 @@ BEGIN
     ORDER BY Loans.loanID;
 END //
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanBook
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanBook;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanBook(IN p_loanID INT, IN p_newBookID INT)
+BEGIN
+    UPDATE Loans
+    SET bookID = p_newBookID
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
