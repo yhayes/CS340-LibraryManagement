@@ -188,6 +188,19 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanDate
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanDate;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanDate(IN p_loanID INT, IN p_newLoanDate DATE)
+BEGIN
+    UPDATE Loans
+    SET loanDate = p_newLoanDate
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;

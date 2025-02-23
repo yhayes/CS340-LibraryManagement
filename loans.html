@@ -328,6 +328,33 @@
             .catch(error => console.error("Error:", error));
         });
 
+        document.getElementById("update-loan-date-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newLoanDate: formData.get("newLoanDate")
+            };
+
+            fetch("/update-loan-date", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan date updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating loan date: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
         // Initialize everything when the page loads
         document.addEventListener("DOMContentLoaded", refreshData);
     </script>
