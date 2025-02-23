@@ -182,18 +182,6 @@
                         loanDropdown.appendChild(option);
                         deleteLoanDropdown.appendChild(option.cloneNode(true));
                     });
-
-                    // Add event listener to populate book & patron dropdowns when selecting a loan
-                    loanDropdown.addEventListener("change", function () {
-                        const selectedLoanID = loanDropdown.value;
-                        if (!selectedLoanID) return;
-
-                        const selectedLoan = data.find(loan => loan.loanID == selectedLoanID);
-                        if (selectedLoan) {
-                            document.getElementById("update-book-dropdown").value = selectedLoan.bookID;
-                            document.getElementById("update-patron-dropdown").value = selectedLoan.patronID;
-                        }
-                    });
                 })
                 .catch(error => console.error('Error loading loans for dropdowns:', error));
         }
