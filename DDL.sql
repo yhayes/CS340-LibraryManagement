@@ -141,6 +141,26 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: GetLoansWithDetails
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS GetLoansWithDetails;
+DELIMITER //
+CREATE PROCEDURE GetLoansWithDetails()
+BEGIN
+    SELECT
+        Loans.loanID,
+        CONCAT(Books.title, ' (', Books.yearPublished, ')') AS bookTitle,
+        CONCAT(Patrons.firstName, ' ', Patrons.lastName, ' (Joined: ', Patrons.membershipDate, ')') AS patronName,
+        Loans.loanDate,
+        Loans.returnDate
+    FROM Loans
+    JOIN Books ON Loans.bookID = Books.bookID
+    JOIN Patrons ON Loans.patronID = Patrons.patronID
+    ORDER BY Loans.loanID;
+END //
+DELIMITER ;
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
