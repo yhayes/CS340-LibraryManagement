@@ -53,12 +53,6 @@
 
 
     <script>
-        // Helper function to format date strings
-        function formatDate(dateString) {
-                    if (!dateString) return '';
-                    return new Date(dateString).toISOString().split('T')[0];
-                }
-
         // Fetch patrons from the backend and update the table
         function loadPatrons() {
             fetch('/patrons')
@@ -73,14 +67,13 @@
                             <td>${patron.patronID}</td>
                             <td>${patron.firstName}</td>
                             <td>${patron.lastName}</td>
-                            <td>${formatDate(patron.membershipDate)}</td>
+                            <td>${patron.membershipDate}</td>
                         `;
                         table.appendChild(row);
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
         }
-
 
         // Handle form submission to add a new patron
         document.getElementById("add-patron-form").addEventListener("submit", function (event) {
