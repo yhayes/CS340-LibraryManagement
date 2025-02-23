@@ -61,7 +61,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('books-table');
-                    table.innerHTML = ''; // Clear existing data
+                    table.innerHTML = '';
 
                     data.forEach(book => {
                         const row = document.createElement('tr');
@@ -80,7 +80,7 @@
 
         // Fetch authors from the backend and update the dropdown
         function loadAuthors() {
-            fetch('/authors-dropdown') // 🔥 FIXED: Now uses authors-dropdown instead of /authors
+            fetch('/authors-dropdown')
                 .then(response => response.json())
                 .then(data => {
                     const dropdown = document.getElementById('author-dropdown');
