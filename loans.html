@@ -153,6 +153,12 @@
             loadLoanDropdowns();
         }
 
+        // Helper function to format date strings
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            return new Date(dateString).toISOString().split('T')[0];
+        }
+
         function loadLoans() {
             fetch('/loans')
                 .then(response => response.json())
@@ -166,8 +172,8 @@
                             <td>${loan.loanID}</td>
                             <td>${loan.bookTitle}</td>
                             <td>${loan.patronName}</td>
-                            <td>${loan.loanDate}</td>
-                            <td>${loan.returnDate || 'Not Returned'}</td>
+                            <td>${formatDate(loan.loanDate)}</td>
+                            <td>${loan.returnDate ? formatDate(loan.returnDate) : 'Not Returned'}</td>
                         `;
                         table.appendChild(row);
                     });
