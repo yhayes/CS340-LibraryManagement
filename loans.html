@@ -167,21 +167,43 @@
                 .catch(error => console.error("Error loading loans:", error));
         }
 
+        // function loadBooks() {
+        //     fetch('/books-dropdown')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const bookDropdown = document.getElementById('book-dropdown');
+        //             bookDropdown.innerHTML = '<option value="">Select a Book</option>';
+        //             data.forEach(book => {
+        //                 const option = document.createElement('option');
+        //                 option.value = book.bookID;
+        //                 option.textContent = `${book.title} (${book.yearPublished})`;
+        //                 bookDropdown.appendChild(option);
+        //             });
+        //         })
+        //         .catch(error => console.error('Error loading books:', error));
+        // }
+
         function loadBooks() {
-            fetch('/books-dropdown')
-                .then(response => response.json())
-                .then(data => {
-                    const bookDropdown = document.getElementById('book-dropdown');
-                    bookDropdown.innerHTML = '<option value="">Select a Book</option>';
-                    data.forEach(book => {
-                        const option = document.createElement('option');
-                        option.value = book.bookID;
-                        option.textContent = `${book.title} (${book.yearPublished})`;
-                        bookDropdown.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error loading books:', error));
-        }
+    fetch('/books-dropdown')
+        .then(response => response.json())
+        .then(data => {
+            const bookDropdown = document.getElementById('book-dropdown');
+            const updateBookDropdown = document.getElementById('update-book-dropdown'); // <-- Add this
+
+            bookDropdown.innerHTML = '<option value="">Select a Book</option>';
+            updateBookDropdown.innerHTML = '<option value="">Select a Book</option>'; // <-- Reset it too
+
+            data.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.bookID;
+                option.textContent = `${book.title} (${book.yearPublished})`;
+
+                bookDropdown.appendChild(option);
+                updateBookDropdown.appendChild(option.cloneNode(true)); // <-- Populate Update Book dropdown too
+            });
+        })
+        .catch(error => console.error('Error loading books:', error));
+}
 
         function loadPatrons() {
             fetch('/patrons-dropdown')
