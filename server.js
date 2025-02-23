@@ -169,6 +169,21 @@ app.post("/update-loan-book", (req, res) => {
   });
 });
 
+// Update the patron for a loan
+app.post("/update-loan-patron", (req, res) => {
+  const { loanID, newPatronID } = req.body;
+  const query = "CALL UpdateLoanPatron(?, ?)";
+
+  pool.query(query, [loanID, newPatronID], (error, results) => {
+      if (error) {
+          console.error("Error updating loan patron:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });

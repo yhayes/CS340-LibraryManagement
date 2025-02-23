@@ -175,6 +175,19 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanPatron
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanPatron;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanPatron(IN p_loanID INT, IN p_newPatronID INT)
+BEGIN
+    UPDATE Loans
+    SET patronID = p_newPatronID
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
