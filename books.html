@@ -80,7 +80,7 @@
 
         // Fetch authors from the backend and update the dropdown
         function loadAuthors() {
-            fetch('/authors')
+            fetch('/authors-dropdown') // 🔥 FIXED: Now uses authors-dropdown instead of /authors
                 .then(response => response.json())
                 .then(data => {
                     const dropdown = document.getElementById('author-dropdown');

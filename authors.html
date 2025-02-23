@@ -51,7 +51,7 @@
     <script>
         // Fetch authors from the backend and update the table
         function loadAuthors() {
-            fetch('/authors')
+            fetch('/authors')  // ✅ Confirmed: Uses correct API endpoint
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('authors-table');
