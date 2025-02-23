@@ -214,6 +214,21 @@ app.post("/update-return-date", (req, res) => {
   });
 });
 
+// Delete a loan
+app.post("/delete-loan", (req, res) => {
+  const { loanID } = req.body;
+  const query = "CALL DeleteLoan(?)";
+
+  pool.query(query, [loanID], (error, results) => {
+      if (error) {
+          console.error("Error deleting loan:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });
