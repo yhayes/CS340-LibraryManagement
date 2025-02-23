@@ -170,38 +170,40 @@
         }
 
         function loadBooks() {
-            fetch('/books-dropdown')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelectorAll('[id^=update-book-dropdown]').forEach(dropdown => {
-                        dropdown.innerHTML = '<option value="">Select a Book</option>';
-                        data.forEach(book => {
-                            const option = document.createElement('option');
-                            option.value = book.bookID;
-                            option.textContent = `${book.title} (${book.yearPublished})`;
-                            dropdown.appendChild(option);
-                        });
-                    });
-                })
-                .catch(error => console.error('Error loading books:', error));
-        }
+    fetch('/books-dropdown')
+        .then(response => response.json())
+        .then(data => {
+            // Update ALL book dropdowns, including Add Loan section
+            document.querySelectorAll('#book-dropdown, [id^=update-book-dropdown]').forEach(dropdown => {
+                dropdown.innerHTML = '<option value="">Select a Book</option>';
+                data.forEach(book => {
+                    const option = document.createElement('option');
+                    option.value = book.bookID;
+                    option.textContent = `${book.title} (${book.yearPublished})`;
+                    dropdown.appendChild(option);
+                });
+            });
+        })
+        .catch(error => console.error('Error loading books:', error));
+}
 
-        function loadPatrons() {
-            fetch('/patrons-dropdown')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelectorAll('[id^=update-patron-dropdown]').forEach(dropdown => {
-                        dropdown.innerHTML = '<option value="">Select a Patron</option>';
-                        data.forEach(patron => {
-                            const option = document.createElement('option');
-                            option.value = patron.patronID;
-                            option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
-                            dropdown.appendChild(option);
-                        });
-                    });
-                })
-                .catch(error => console.error('Error loading patrons:', error));
-        }
+function loadPatrons() {
+    fetch('/patrons-dropdown')
+        .then(response => response.json())
+        .then(data => {
+            // Update ALL patron dropdowns, including Add Loan section
+            document.querySelectorAll('#patron-dropdown, [id^=update-patron-dropdown]').forEach(dropdown => {
+                dropdown.innerHTML = '<option value="">Select a Patron</option>';
+                data.forEach(patron => {
+                    const option = document.createElement('option');
+                    option.value = patron.patronID;
+                    option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
+                    dropdown.appendChild(option);
+                });
+            });
+        })
+        .catch(error => console.error('Error loading patrons:', error));
+}
 
         document.addEventListener("DOMContentLoaded", function () {
             loadLoans();
