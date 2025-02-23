@@ -214,6 +214,18 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Stored Procedure: DeleteLoan
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS DeleteLoan;
+DELIMITER //
+CREATE PROCEDURE DeleteLoan(IN p_loanID INT)
+BEGIN
+    DELETE FROM Loans
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
