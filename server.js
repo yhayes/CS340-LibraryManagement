@@ -154,6 +154,66 @@ app.post("/add-loan", (req, res) => {
     });
 });
 
+// Update the book for a loan
+app.post("/update-loan-book", (req, res) => {
+  const { loanID, newBookID } = req.body;
+  const query = "CALL UpdateLoanBook(?, ?)";
+
+  pool.query(query, [loanID, newBookID], (error, results) => {
+      if (error) {
+          console.error("Error updating loan book:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
+// Update the patron for a loan
+app.post("/update-loan-patron", (req, res) => {
+  const { loanID, newPatronID } = req.body;
+  const query = "CALL UpdateLoanPatron(?, ?)";
+
+  pool.query(query, [loanID, newPatronID], (error, results) => {
+      if (error) {
+          console.error("Error updating loan patron:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
+// Update the loan date
+app.post("/update-loan-date", (req, res) => {
+  const { loanID, newLoanDate } = req.body;
+  const query = "CALL UpdateLoanDate(?, ?)";
+
+  pool.query(query, [loanID, newLoanDate], (error, results) => {
+      if (error) {
+          console.error("Error updating loan date:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
+// Update the return date
+app.post("/update-return-date", (req, res) => {
+  const { loanID, newReturnDate } = req.body;
+  const query = "CALL UpdateReturnDate(?, ?)";
+
+  pool.query(query, [loanID, newReturnDate], (error, results) => {
+      if (error) {
+          console.error("Error updating return date:", error);
+          res.status(500).json({ error: "Database error." });
+      } else {
+          res.json({ success: true });
+      }
+  });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });

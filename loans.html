@@ -57,32 +57,71 @@
             </form>
         </div>
 
-        <!-- Update Loan Section -->
-        <div class="crud-section">
-            <h2>Update Loan</h2>
-            <form id="update-loan-form">
+         <!-- Update Book Section -->
+         <div class="crud-section">
+            <h2>Update Book for Loan</h2>
+            <form id="update-book-form">
                 <label>Select Loan:
-                    <select name="loanID" id="loan-dropdown" required>
+                    <select name="loanID" id="update-book-loan-dropdown" required>
                         <option value="">Select a Loan</option>
                     </select>
                 </label><br>
-
                 <label>New Book:
-                    <select name="newBookID" id="update-book-dropdown">
+                    <select name="newBookID" id="update-book-dropdown" required>
                         <option value="">Select a Book</option>
                     </select>
                 </label><br>
+                <button type="submit">Update Book</button>
+            </form>
+        </div>
 
+        <!-- Update Patron Section -->
+        <div class="crud-section">
+            <h2>Update Patron for Loan</h2>
+            <form id="update-patron-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-patron-loan-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
                 <label>New Patron:
-                    <select name="newPatronID" id="update-patron-dropdown">
+                    <select name="newPatronID" id="update-patron-dropdown" required>
                         <option value="">Select a Patron</option>
                     </select>
                 </label><br>
+                <button type="submit">Update Patron</button>
+            </form>
+        </div>
 
-                <label>New Loan Date: <input type="date" name="newLoanDate"></label><br>
-                <label>New Return Date: <input type="date" name="newReturnDate"></label><br>
+        <!-- Update Loan Date Section -->
+        <div class="crud-section">
+            <h2>Update Loan Date</h2>
+            <form id="update-loan-date-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-loan-date-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+                <label>New Loan Date:
+                    <input type="date" name="newLoanDate" required>
+                </label><br>
+                <button type="submit">Update Loan Date</button>
+            </form>
+        </div>
 
-                <button type="submit">Update Loan</button>
+        <!-- Update Return Date Section -->
+        <div class="crud-section">
+            <h2>Update Return Date</h2>
+            <form id="update-return-date-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-return-date-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+                <label>New Return Date:
+                    <input type="date" name="newReturnDate" required>
+                </label><br>
+                <button type="submit">Update Return Date</button>
             </form>
         </div>
 
@@ -106,6 +145,14 @@
     </footer>
 
     <script>
+        // Helper function to refresh all data
+        function refreshData() {
+            loadLoans();
+            loadBooks();
+            loadPatrons();
+            loadLoanDropdowns();
+        }
+
         function loadLoans() {
             fetch('/loans')
                 .then(response => response.json())
@@ -133,12 +180,18 @@
                 .then(response => response.json())
                 .then(data => {
                     const bookDropdown = document.getElementById('book-dropdown');
+                    const updateBookDropdown = document.getElementById('update-book-dropdown');
+
                     bookDropdown.innerHTML = '<option value="">Select a Book</option>';
+                    updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
+
                     data.forEach(book => {
                         const option = document.createElement('option');
                         option.value = book.bookID;
                         option.textContent = `${book.title} (${book.yearPublished})`;
+
                         bookDropdown.appendChild(option);
+                        updateBookDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading books:', error));
@@ -149,15 +202,49 @@
                 .then(response => response.json())
                 .then(data => {
                     const patronDropdown = document.getElementById('patron-dropdown');
+                    const updatePatronDropdown = document.getElementById('update-patron-dropdown');
+
                     patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+                    updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+
                     data.forEach(patron => {
                         const option = document.createElement('option');
                         option.value = patron.patronID;
                         option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
                         patronDropdown.appendChild(option);
+                        updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
                 })
                 .catch(error => console.error('Error loading patrons:', error));
+        }
+
+        function loadLoanDropdowns() {
+            fetch('/loans')
+                .then(response => response.json())
+                .then(data => {
+                    // Get all loan dropdown elements
+                    const loanDropdowns = [
+                        document.getElementById('update-book-loan-dropdown'),
+                        document.getElementById('update-patron-loan-dropdown'),
+                        document.getElementById('update-loan-date-dropdown'),
+                        document.getElementById('update-return-date-dropdown'),
+                        document.getElementById('delete-loan-dropdown')
+                    ];
+
+                    // Populate each dropdown
+                    loanDropdowns.forEach(dropdown => {
+                        if (dropdown) {
+                            dropdown.innerHTML = '<option value="">Select a Loan</option>';
+                            data.forEach(loan => {
+                                const option = document.createElement('option');
+                                option.value = loan.loanID;
+                                option.textContent = `Loan #${loan.loanID}: ${loan.bookTitle} - ${loan.patronName}`;
+                                dropdown.appendChild(option);
+                            });
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading loan dropdowns:', error));
         }
 
         document.getElementById("add-loan-form").addEventListener("submit", function (event) {
@@ -178,7 +265,7 @@
             .then(data => {
                 if (data.success) {
                     alert("Loan added successfully!");
-                    loadLoans();
+                    refreshData();
                     event.target.reset();
                 } else {
                     alert("Error adding loan: " + data.error);
@@ -187,11 +274,116 @@
             .catch(error => console.error("Error:", error));
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadLoans();
-            loadBooks();
-            loadPatrons();
+        document.getElementById("update-book-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newBookID: formData.get("newBookID")
+            };
+
+            fetch("/update-loan-book", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan book updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating loan book: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
         });
+
+        document.getElementById("update-patron-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newPatronID: formData.get("newPatronID")
+            };
+
+            fetch("/update-loan-patron", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan patron updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating loan patron: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        document.getElementById("update-loan-date-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newLoanDate: formData.get("newLoanDate")
+            };
+
+            fetch("/update-loan-date", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Loan date updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating loan date: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        document.getElementById("update-return-date-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const updateData = {
+                loanID: formData.get("loanID"),
+                newReturnDate: formData.get("newReturnDate")
+            };
+
+            fetch("/update-return-date", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updateData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Return date updated successfully!");
+                    refreshData();
+                    event.target.reset();
+                } else {
+                    alert("Error updating return date: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        // Initialize everything when the page loads
+        document.addEventListener("DOMContentLoaded", refreshData);
     </script>
 </body>
 </html>

@@ -160,6 +160,59 @@ BEGIN
     ORDER BY Loans.loanID;
 END //
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanBook
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanBook;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanBook(IN p_loanID INT, IN p_newBookID INT)
+BEGIN
+    UPDATE Loans
+    SET bookID = p_newBookID
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanPatron
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanPatron;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanPatron(IN p_loanID INT, IN p_newPatronID INT)
+BEGIN
+    UPDATE Loans
+    SET patronID = p_newPatronID
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: UpdateLoanDate
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateLoanDate;
+DELIMITER //
+CREATE PROCEDURE UpdateLoanDate(IN p_loanID INT, IN p_newLoanDate DATE)
+BEGIN
+    UPDATE Loans
+    SET loanDate = p_newLoanDate
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Stored Procedure: UpdateReturnDate
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS UpdateReturnDate;
+DELIMITER //
+CREATE PROCEDURE UpdateReturnDate(IN p_loanID INT, IN p_newReturnDate DATE)
+BEGIN
+    UPDATE Loans
+    SET returnDate = p_newReturnDate
+    WHERE loanID = p_loanID;
+END //
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Re-enable foreign key checks and commit changes
 -- -----------------------------------------------------
