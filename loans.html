@@ -57,32 +57,71 @@
             </form>
         </div>
 
-        <!-- Update Loan Section -->
-        <div class="crud-section">
-            <h2>Update Loan</h2>
-            <form id="update-loan-form">
+         <!-- Update Book Section -->
+         <div class="crud-section">
+            <h2>Update Book for Loan</h2>
+            <form id="update-book-form">
                 <label>Select Loan:
-                    <select name="loanID" id="loan-dropdown" required>
+                    <select name="loanID" id="update-book-loan-dropdown" required>
                         <option value="">Select a Loan</option>
                     </select>
                 </label><br>
-
                 <label>New Book:
-                    <select name="newBookID" id="update-book-dropdown">
+                    <select name="newBookID" id="update-book-dropdown" required>
                         <option value="">Select a Book</option>
                     </select>
                 </label><br>
+                <button type="submit">Update Book</button>
+            </form>
+        </div>
 
+        <!-- Update Patron Section -->
+        <div class="crud-section">
+            <h2>Update Patron for Loan</h2>
+            <form id="update-patron-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-patron-loan-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
                 <label>New Patron:
-                    <select name="newPatronID" id="update-patron-dropdown">
+                    <select name="newPatronID" id="update-patron-dropdown" required>
                         <option value="">Select a Patron</option>
                     </select>
                 </label><br>
+                <button type="submit">Update Patron</button>
+            </form>
+        </div>
 
-                <label>New Loan Date: <input type="date" name="newLoanDate"></label><br>
-                <label>New Return Date: <input type="date" name="newReturnDate"></label><br>
+        <!-- Update Loan Date Section -->
+        <div class="crud-section">
+            <h2>Update Loan Date</h2>
+            <form id="update-loan-date-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-loan-date-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+                <label>New Loan Date:
+                    <input type="date" name="newLoanDate" required>
+                </label><br>
+                <button type="submit">Update Loan Date</button>
+            </form>
+        </div>
 
-                <button type="submit">Update Loan</button>
+        <!-- Update Return Date Section -->
+        <div class="crud-section">
+            <h2>Update Return Date</h2>
+            <form id="update-return-date-form">
+                <label>Select Loan:
+                    <select name="loanID" id="update-return-date-dropdown" required>
+                        <option value="">Select a Loan</option>
+                    </select>
+                </label><br>
+                <label>New Return Date:
+                    <input type="date" name="newReturnDate" required>
+                </label><br>
+                <button type="submit">Update Return Date</button>
             </form>
         </div>
 
