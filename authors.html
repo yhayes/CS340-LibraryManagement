@@ -55,7 +55,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('authors-table');
-                    table.innerHTML = ''; // Clear existing data
+                    table.innerHTML = '';
 
                     data.forEach(author => {
                         const row = document.createElement('tr');
@@ -73,7 +73,7 @@
 
         // Handle form submission to add a new author
         document.getElementById("add-author-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent page reload
+            event.preventDefault();
 
             const formData = new FormData(event.target);
             const authorData = {
@@ -92,7 +92,7 @@
                 if (data.success) {
                     alert("Author added successfully!");
                     loadAuthors(); // Reload the table with the new author
-                    event.target.reset(); // Clear the form
+                    event.target.reset();
                 } else {
                     alert("Error adding author: " + data.error);
                 }
@@ -100,7 +100,7 @@
             .catch(error => console.error("Error:", error));
         });
 
-        // Load authors when the page loads
+
         loadAuthors();
     </script>
 </body>

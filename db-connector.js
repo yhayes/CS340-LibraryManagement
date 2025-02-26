@@ -1,7 +1,7 @@
-// Import the MySQL package
+
 const mysql = require('mysql');
 
-// Create a connection pool
+
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'classmysql.engr.oregonstate.edu',
@@ -10,5 +10,5 @@ const pool = mysql.createPool({
     database: 'cs340_hayesy'
 });
 
-// Export the pool so it can be used in other files
+
 module.exports = pool;
