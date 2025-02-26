@@ -97,14 +97,14 @@
 
         // Handle form submission to add a new book
         document.getElementById("add-book-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent page reload
+            event.preventDefault();
 
             const formData = new FormData(event.target);
             const bookData = {
                 title: formData.get("title"),
                 genre: formData.get("genre"),
                 yearPublished: formData.get("yearPublished"),
-                authorID: formData.get("authorID") || null // Handle empty author
+                authorID: formData.get("authorID") || null // Handle the case of empty author
             };
 
             fetch("/add-book", {
@@ -116,8 +116,8 @@
             .then(data => {
                 if (data.success) {
                     alert("Book added successfully!");
-                    loadBooks(); // Reload the table with the new book
-                    event.target.reset(); // Clear the form
+                    loadBooks();
+                    event.target.reset();
                 } else {
                     alert("Error adding book: " + data.error);
                 }
@@ -125,7 +125,7 @@
             .catch(error => console.error("Error:", error));
         });
 
-        // Load books and authors when the page loads
+        // Load the books and authors when the page loads
         loadBooks();
         loadAuthors();
     </script>

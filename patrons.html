@@ -59,7 +59,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('patrons-table');
-                    table.innerHTML = ''; // Clear existing data
+                    table.innerHTML = '';
 
                     data.forEach(patron => {
                         const row = document.createElement('tr');
@@ -77,7 +77,7 @@
 
         // Handle form submission to add a new patron
         document.getElementById("add-patron-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent page reload
+            event.preventDefault();
 
             const formData = new FormData(event.target);
             const patronData = {
@@ -95,8 +95,8 @@
             .then(data => {
                 if (data.success) {
                     alert("Patron added successfully!");
-                    loadPatrons(); // Reload the table with the new patron
-                    event.target.reset(); // Clear the form
+                    loadPatrons();
+                    event.target.reset();
                 } else {
                     alert("Error adding patron: " + data.error);
                 }
@@ -110,7 +110,7 @@
         // Set default membership date to today
         document.addEventListener("DOMContentLoaded", function () {
             const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-            document.getElementById("membershipDate").value = today; // Set the input field to today's date
+            document.getElementById("membershipDate").value = today; // Prepopulate input field with today's date
 });
     </script>
 </body>
