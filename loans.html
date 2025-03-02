@@ -167,7 +167,7 @@
                         // Create a new date object and pass in the returnDate as an argument
                         const dateOfReturn = new Date(loan.returnDate);
                         // Format the loan date to make it easier to read
-                        const formattedDateOfLoan = `${dateOfLoan.getMonth()}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
+                        const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
                         // Format the return date to make it easier to read
                         const returnDateOfReturn = `${dateOfReturn.getMonth()}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`
                         const row = document.createElement("tr");
