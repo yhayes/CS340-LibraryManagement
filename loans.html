@@ -213,9 +213,13 @@
                     updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
 
                     data.forEach(patron => {
+                        // Create a new date object and pass in the membershipDate as an argument
+                        const date = new Date(patron.membershipDate);
+                        // Format the date with the Date methods.
+                        const formattedDate = `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`
                         const option = document.createElement('option');
                         option.value = patron.patronID;
-                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
+                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${formattedDate})`;
                         patronDropdown.appendChild(option);
                         updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
