@@ -65,7 +65,7 @@
                         // Create a new date object and pass in the membershipDate as an argument
                         const date = new Date(patron.membershipDate);
                         // Format the date with the Date methods.
-                        const formattedDate = `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`
+                        const formattedDate = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${patron.patronID}</td>
