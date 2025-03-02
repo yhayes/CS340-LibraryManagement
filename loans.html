@@ -164,19 +164,25 @@
                     data.forEach(loan => {
                         // Create a new date object and pass in the loanDate as an argument
                         const dateOfLoan = new Date(loan.loanDate);
-                        // Create a new date object and pass in the returnDate as an argument
-                        const dateOfReturn = new Date(loan.returnDate);
                         // Format the loan date to make it easier to read
                         const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
-                        // Format the return date to make it easier to read
-                        const formattedDateOfReturn = `${dateOfReturn.getMonth()}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`
+                        
+                        // Default return date is Null (Not Returned)
+                        let formattedDateOfReturn = "Not Returned";
+                        // If the returnDate is something other than Null
+                        if (loan.returnDate){
+                            // Create a new date object and pass in the returnDate as an argument
+                            const dateOfReturn = new Date(loan.returnDate);
+                            // Format the return date to make it easier to read
+                            formattedDateOfReturn = `${dateOfReturn.getMonth()+1}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`;
+                        }
                         const row = document.createElement("tr");
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
                             <td>${loan.bookTitle}</td>
                             <td>${loan.patronName}</td>
                             <td>${formattedDateOfLoan}</td>
-                            <td>${formattedDateOfReturn || 'Not Returned'}</td>
+                            <td>${formattedDateOfReturn}</td>
                         `;
                         table.appendChild(row);
                     });
