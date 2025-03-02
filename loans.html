@@ -190,6 +190,9 @@
                     bookDropdown.innerHTML = '<option value="">Select a Book</option>';
                     updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
 
+                    // Sort alphabetically by book title
+                    data.sort((a, b) => a.title.localeCompare(b.title) );
+
                     data.forEach(book => {
                         const option = document.createElement('option');
                         option.value = book.bookID;
@@ -211,6 +214,9 @@
 
                     patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
                     updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
+
+                    // Sort alphabetically by patron first name
+                    data.sort((a, b) => a.firstName.localeCompare(b.firstName) );
 
                     data.forEach(patron => {
                         // Create a new date object and pass in the membershipDate as an argument
@@ -240,6 +246,9 @@
                         document.getElementById('delete-loan-dropdown')
                     ];
 
+                    // Sort alphabetically by patronName
+                    data.sort((a, b) => a.patronName.localeCompare(b.patronName) );
+
                     // Populate each dropdown
                     loanDropdowns.forEach(dropdown => {
                         if (dropdown) {
@@ -247,7 +256,7 @@
                             data.forEach(loan => {
                                 const option = document.createElement('option');
                                 option.value = loan.loanID;
-                                option.textContent = `Loan #${loan.loanID}: ${loan.bookTitle} - ${loan.patronName}`;
+                                option.textContent = `${loan.patronName} - ${loan.bookTitle} - (Loan #${loan.loanID})`;
                                 dropdown.appendChild(option);
                             });
                         }
