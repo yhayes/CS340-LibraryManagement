@@ -169,14 +169,14 @@
                         // Format the loan date to make it easier to read
                         const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
                         // Format the return date to make it easier to read
-                        const returnDateOfReturn = `${dateOfReturn.getMonth()}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`
+                        const formattedDateOfReturn = `${dateOfReturn.getMonth()}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`
                         const row = document.createElement("tr");
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
                             <td>${loan.bookTitle}</td>
                             <td>${loan.patronName}</td>
                             <td>${formattedDateOfLoan}</td>
-                            <td>${returnDateOfReturn || 'Not Returned'}</td>
+                            <td>${formattedDateOfReturn || 'Not Returned'}</td>
                         `;
                         table.appendChild(row);
                     });
