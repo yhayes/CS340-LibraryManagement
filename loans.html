@@ -162,12 +162,16 @@
                     table.innerHTML = "";
 
                     data.forEach(loan => {
+                        // Create a new date object and pass in the loanDate as an argument
+                        const date = new Date(loan.loanDate);
+                        // Format the date with the Date methods.
+                        const formattedDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
                         const row = document.createElement("tr");
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
                             <td>${loan.bookTitle}</td>
                             <td>${loan.patronName}</td>
-                            <td>${loan.loanDate}</td>
+                            <td>${formattedDate}</td>
                             <td>${loan.returnDate || 'Not Returned'}</td>
                         `;
                         table.appendChild(row);
