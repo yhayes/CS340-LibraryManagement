@@ -88,7 +88,7 @@
                     data.forEach(author => {
                         const option = document.createElement('option');
                         option.value = author.authorID;
-                        option.textContent = `${author.firstName} ${author.lastName}`;
+                        option.textContent = `${author.firstName} ${author.lastName} (${author.birthYear})`;
                         dropdown.appendChild(option);
                     });
                 })
