@@ -22,6 +22,7 @@
     </nav>
 
     <h2>Loan Records</h2>
+    <div class="loan-table-crud-container">
     <table>
         <thead>
             <tr>
@@ -35,10 +36,10 @@
         <tbody id="loans-table"></tbody>
     </table>
 
-    <div class="crud-container">
+    <div class="crud-container-loans">
         <!-- Add New Loan Section -->
-        <div class="crud-section">
-            <h2>Add New Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Add New Loan</h2>
             <form id="add-loan-form">
                 <label>Book:
                     <select name="bookID" id="book-dropdown" required>
@@ -58,8 +59,8 @@
         </div>
 
          <!-- Update Book Section -->
-         <div class="crud-section">
-            <h2>Update Book for Loan</h2>
+         <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Book for Loan</h2>
             <form id="update-book-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-book-loan-dropdown" required>
@@ -76,8 +77,8 @@
         </div>
 
         <!-- Update Patron Section -->
-        <div class="crud-section">
-            <h2>Update Patron for Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Patron for Loan</h2>
             <form id="update-patron-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-patron-loan-dropdown" required>
@@ -94,8 +95,8 @@
         </div>
 
         <!-- Update Loan Date Section -->
-        <div class="crud-section">
-            <h2>Update Loan Date</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Loan Date</h2>
             <form id="update-loan-date-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-loan-date-dropdown" required>
@@ -110,8 +111,8 @@
         </div>
 
         <!-- Update Return Date Section -->
-        <div class="crud-section">
-            <h2>Update Return Date</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Return Date</h2>
             <form id="update-return-date-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-return-date-dropdown" required>
@@ -126,8 +127,8 @@
         </div>
 
         <!-- Delete Loan Section -->
-        <div class="crud-section">
-            <h2>Delete Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Delete Loan</h2>
             <form id="delete-loan-form">
                 <label>Select Loan:
                     <select name="deleteLoanID" id="delete-loan-dropdown" required>
@@ -139,6 +140,7 @@
             </form>
         </div>
     </div>
+</div>
 
     <footer>
         <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
