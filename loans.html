@@ -168,7 +168,7 @@
                         const dateOfLoan = new Date(loan.loanDate);
                         // Format the loan date to make it easier to read
                         const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
-                        
+
                         // Default return date is Null (Not Returned)
                         let formattedDateOfReturn = "Not Returned";
                         // If the returnDate is something other than Null
@@ -359,11 +359,28 @@
         });
 
         document.getElementById("update-loan-date-form").addEventListener("submit", function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            const formData = new FormData(event.target);
+    const formData = new FormData(event.target);
+    const loanID = formData.get("loanID");
+    const newLoanDate = new Date(formData.get("newLoanDate"));
+
+    // Check if this loan has a return date, and if so, ensure loan date is before return date
+    fetch(`/loan-details/${loanID}`)
+        .then(response => response.json())
+        .then(loanDetails => {
+            if (loanDetails.returnDate) {
+                const returnDate = new Date(loanDetails.returnDate);
+
+                if (newLoanDate > returnDate) {
+                    alert("Loan date must be before return date.");
+                    return;
+                }
+            }
+
+            // If validation passes, update the loan date
             const updateData = {
-                loanID: formData.get("loanID"),
+                loanID: loanID,
                 newLoanDate: formData.get("newLoanDate")
             };
 
@@ -383,14 +400,31 @@
                 }
             })
             .catch(error => console.error("Error:", error));
-        });
+        })
+        .catch(error => console.error("Error fetching loan details:", error));
+});
 
         document.getElementById("update-return-date-form").addEventListener("submit", function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            const formData = new FormData(event.target);
+    const formData = new FormData(event.target);
+    const loanID = formData.get("loanID");
+    const newReturnDate = new Date(formData.get("newReturnDate"));
+
+    // Fetch loan details to check loan date
+    fetch(`/loan-details/${loanID}`)
+        .then(response => response.json())
+        .then(loanDetails => {
+            const loanDate = new Date(loanDetails.loanDate);
+
+            if (newReturnDate < loanDate) {
+                alert("Return date must be after loan date.");
+                return;
+            }
+
+            // If validation passes, update the return date
             const updateData = {
-                loanID: formData.get("loanID"),
+                loanID: loanID,
                 newReturnDate: formData.get("newReturnDate")
             };
 
@@ -410,7 +444,9 @@
                 }
             })
             .catch(error => console.error("Error:", error));
-        });
+        })
+        .catch(error => console.error("Error fetching loan details:", error));
+});
 
         document.getElementById("delete-loan-form").addEventListener("submit", function (event) {
     event.preventDefault();

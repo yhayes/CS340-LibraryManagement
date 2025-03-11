@@ -229,6 +229,23 @@ app.post("/delete-loan", (req, res) => {
   });
 });
 
+// Get details for a specific loan (for validation)
+app.get("/loan-details/:loanID", (req, res) => {
+  const loanID = req.params.loanID;
+  const query = "SELECT loanDate, returnDate FROM Loans WHERE loanID = ?";
+
+  pool.query(query, [loanID], (error, results) => {
+      if (error) {
+          console.error("Error retrieving loan details:", error);
+          res.status(500).json({ error: "Database error." });
+      } else if (results.length === 0) {
+          res.status(404).json({ error: "Loan not found." });
+      } else {
+          res.json(results[0]);
+      }
+  });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://classwork.engr.oregonstate.edu:${PORT}/`);
 });
