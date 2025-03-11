@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const pool = require("./db-connector");
 const app = express();
-const PORT = 51515;
+const PORT = 4985;
 
 app.use(express.json());
 app.use(express.static(__dirname));
