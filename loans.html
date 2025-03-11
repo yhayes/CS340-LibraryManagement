@@ -157,40 +157,38 @@
         }
 
         function loadLoans() {
-            fetch('/loans')
-                .then(response => response.json())
-                .then(data => {
-                    const table = document.getElementById('loans-table');
-                    table.innerHTML = "";
+    fetch('/loans')
+        .then(response => response.json())
+        .then(data => {
+            const table = document.getElementById('loans-table');
+            table.innerHTML = "";
 
-                    data.forEach(loan => {
-                        // Create a new date object and pass in the loanDate as an argument
-                        const dateOfLoan = new Date(loan.loanDate);
-                        // Format the loan date to make it easier to read
-                        const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
+            data.forEach(loan => {
+                // Create a new date object and pass in the loanDate as an argument
+                const dateOfLoan = new Date(loan.loanDate);
+                // Format the loan date to make it easier to read
+                const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
 
-                        // Default return date is Null (Not Returned)
-                        let formattedDateOfReturn = "Not Returned";
-                        // If the returnDate is something other than Null
-                        if (loan.returnDate){
-                            // Create a new date object and pass in the returnDate as an argument
-                            const dateOfReturn = new Date(loan.returnDate);
-                            // Format the return date to make it easier to read
-                            formattedDateOfReturn = `${dateOfReturn.getMonth()+1}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`;
-                        }
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${loan.loanID}</td>
-                            <td>${loan.bookTitle}</td>
-                            <td>${loan.patronName}</td>
-                            <td>${formattedDateOfLoan}</td>
-                            <td>${formattedDateOfReturn}</td>
-                        `;
-                        table.appendChild(row);
-                    });
-                })
-                .catch(error => console.error("Error loading loans:", error));
-        }
+                // Default return date is NULL
+                let formattedDateOfReturn = "NULL";
+
+                if (loan.returnDate){
+                    const dateOfReturn = new Date(loan.returnDate);
+                    formattedDateOfReturn = `${dateOfReturn.getMonth()+1}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`;
+                }
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${loan.loanID}</td>
+                    <td>${loan.bookTitle}</td>
+                    <td>${loan.patronName}</td>
+                    <td>${formattedDateOfLoan}</td>
+                    <td>${formattedDateOfReturn}</td>
+                `;
+                table.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error loading loans:", error));
+}
 
         function loadBooks() {
             fetch('/books-dropdown')
