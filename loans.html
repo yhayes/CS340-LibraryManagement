@@ -182,16 +182,23 @@
                         // Default return date is "Not Returned"
                         let formattedDateOfReturn = "Not Returned";
 
-                        // If the returnDate exists
+                        // If the returnDate exists and is not null
                         if (loan.returnDate && loan.returnDate !== null) {
-                            // Extract just the date part
-                            const dateString = loan.returnDate.split('T')[0];
+                            try {
+                                // Extract just the date part
+                                const dateString = loan.returnDate.split('T')[0];
 
-                            // Split the YYYY-MM-DD format
-                            const [year, month, day] = dateString.split('-');
+                                // Split the YYYY-MM-DD format
+                                const [year, month, day] = dateString.split('-');
 
-                            // Format the date (ensure we're using the exact values without timezone adjustments)
-                            formattedDateOfReturn = `${parseInt(month)}-${parseInt(day)}-${year}`;
+                                // Only proceed if we have valid year, month and day values
+                                if (year && month && day) {
+                                    formattedDateOfReturn = `${parseInt(month)}-${parseInt(day)}-${year}`;
+                                }
+                            } catch (e) {
+                                // If any error occurs during parsing, use the default
+                                formattedDateOfReturn = "Not Returned";
+                            }
                         }
 
                         const row = document.createElement("tr");
