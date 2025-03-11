@@ -164,23 +164,34 @@
                     table.innerHTML = "";
 
                     data.forEach(loan => {
-                        // Create a new date object and pass in the loanDate as an argument
-                        const dateOfLoan = new Date(loan.loanDate);
-                        // Format the loan date to make it easier to read
-                        const formattedDateOfLoan = `${dateOfLoan.getMonth()+1}-${dateOfLoan.getDate()}-${dateOfLoan.getFullYear()}`
+                        // Format loan date by manually parsing the date string
+                        let formattedDateOfLoan;
+                        if (loan.loanDate) {
+                            // Extract just the date part (removing any time component)
+                            const dateString = loan.loanDate.split('T')[0];
+
+                            // Split the YYYY-MM-DD format
+                            const [year, month, day] = dateString.split('-');
+
+                            // Format the date (ensure we're using the exact values without timezone adjustments)
+                            formattedDateOfLoan = `${parseInt(month)}-${parseInt(day)}-${year}`;
+                        } else {
+                            formattedDateOfLoan = "Unknown";
+                        }
 
                         // Default return date is "Not Returned"
                         let formattedDateOfReturn = "Not Returned";
 
-                        // If the returnDate exists and is valid
+                        // If the returnDate exists
                         if (loan.returnDate && loan.returnDate !== null) {
-                            // Create a new date object and pass in the returnDate as an argument
-                            const dateOfReturn = new Date(loan.returnDate);
+                            // Extract just the date part
+                            const dateString = loan.returnDate.split('T')[0];
 
-                            // Check if dateOfReturn is a valid date
-                            if (!isNaN(dateOfReturn.getTime())) {
-                                formattedDateOfReturn = `${dateOfReturn.getMonth()+1}-${dateOfReturn.getDate()}-${dateOfReturn.getFullYear()}`;
-                            }
+                            // Split the YYYY-MM-DD format
+                            const [year, month, day] = dateString.split('-');
+
+                            // Format the date (ensure we're using the exact values without timezone adjustments)
+                            formattedDateOfReturn = `${parseInt(month)}-${parseInt(day)}-${year}`;
                         }
 
                         const row = document.createElement("tr");
@@ -195,7 +206,7 @@
                     });
                 })
                 .catch(error => console.error("Error loading loans:", error));
-            }
+        }
 
         function loadBooks() {
             fetch('/books-dropdown')
