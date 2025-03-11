@@ -164,16 +164,12 @@
                     table.innerHTML = "";
 
                     data.forEach(loan => {
-                        // Format loan date by manually parsing the date string
+
                         let formattedDateOfLoan;
                         if (loan.loanDate) {
-                            // Extract just the date part (removing any time component)
                             const dateString = loan.loanDate.split('T')[0];
-
                             // Split the YYYY-MM-DD format
                             const [year, month, day] = dateString.split('-');
-
-                            // Format the date (ensure we're using the exact values without timezone adjustments)
                             formattedDateOfLoan = `${parseInt(month)}-${parseInt(day)}-${year}`;
                         } else {
                             formattedDateOfLoan = "Unknown";
@@ -185,13 +181,10 @@
                         // If the returnDate exists and is not null
                         if (loan.returnDate && loan.returnDate !== null) {
                             try {
-                                // Extract just the date part
                                 const dateString = loan.returnDate.split('T')[0];
 
-                                // Split the YYYY-MM-DD format
                                 const [year, month, day] = dateString.split('-');
 
-                                // Only proceed if we have valid year, month and day values
                                 if (year && month && day) {
                                     formattedDateOfReturn = `${parseInt(month)}-${parseInt(day)}-${year}`;
                                 }
@@ -254,9 +247,9 @@
                     data.sort((a, b) => a.firstName.localeCompare(b.firstName) );
 
                     data.forEach(patron => {
-                        // Create a new date object and pass in the membershipDate as an argument
+
                         const date = new Date(patron.membershipDate);
-                        // Format the date with the Date methods.
+
                         const formattedDate = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`
                         const option = document.createElement('option');
                         option.value = patron.patronID;
