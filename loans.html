@@ -22,6 +22,7 @@
     </nav>
 
     <h2>Loan Records</h2>
+    <div class="loan-table-crud-container">
     <table>
         <thead>
             <tr>
@@ -35,10 +36,10 @@
         <tbody id="loans-table"></tbody>
     </table>
 
-    <div class="crud-container">
+    <div class="crud-container-loans">
         <!-- Add New Loan Section -->
-        <div class="crud-section">
-            <h2>Add New Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Add New Loan</h2>
             <form id="add-loan-form">
                 <label>Book:
                     <select name="bookID" id="book-dropdown" required>
@@ -58,8 +59,8 @@
         </div>
 
          <!-- Update Book Section -->
-         <div class="crud-section">
-            <h2>Update Book for Loan</h2>
+         <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Book for Loan</h2>
             <form id="update-book-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-book-loan-dropdown" required>
@@ -76,8 +77,8 @@
         </div>
 
         <!-- Update Patron Section -->
-        <div class="crud-section">
-            <h2>Update Patron for Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Patron for Loan</h2>
             <form id="update-patron-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-patron-loan-dropdown" required>
@@ -94,8 +95,8 @@
         </div>
 
         <!-- Update Loan Date Section -->
-        <div class="crud-section">
-            <h2>Update Loan Date</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Loan Date</h2>
             <form id="update-loan-date-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-loan-date-dropdown" required>
@@ -110,8 +111,8 @@
         </div>
 
         <!-- Update Return Date Section -->
-        <div class="crud-section">
-            <h2>Update Return Date</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Update Return Date</h2>
             <form id="update-return-date-form">
                 <label>Select Loan:
                     <select name="loanID" id="update-return-date-dropdown" required>
@@ -126,8 +127,8 @@
         </div>
 
         <!-- Delete Loan Section -->
-        <div class="crud-section">
-            <h2>Delete Loan</h2>
+        <div class="crud-section-loans">
+            <h2 class="crud-section-title">Delete Loan</h2>
             <form id="delete-loan-form">
                 <label>Select Loan:
                     <select name="deleteLoanID" id="delete-loan-dropdown" required>
@@ -139,6 +140,7 @@
             </form>
         </div>
     </div>
+</div>
 
     <footer>
         <p>© 2025 Emerald City Public Library | Yvonne Hayes & Gregory Preiss</p>
@@ -162,13 +164,43 @@
                     table.innerHTML = "";
 
                     data.forEach(loan => {
+
+                        let formattedDateOfLoan;
+                        if (loan.loanDate) {
+                            const dateString = loan.loanDate.split('T')[0];
+                            // Split the YYYY-MM-DD format
+                            const [year, month, day] = dateString.split('-');
+                            formattedDateOfLoan = `${parseInt(month)}-${parseInt(day)}-${year}`;
+                        } else {
+                            formattedDateOfLoan = "Unknown";
+                        }
+
+                        // Default return date is "Not Returned"
+                        let formattedDateOfReturn = "Not Returned";
+
+                        // If the returnDate exists and is not null
+                        if (loan.returnDate && loan.returnDate !== null) {
+                            try {
+                                const dateString = loan.returnDate.split('T')[0];
+
+                                const [year, month, day] = dateString.split('-');
+
+                                if (year && month && day) {
+                                    formattedDateOfReturn = `${parseInt(month)}-${parseInt(day)}-${year}`;
+                                }
+                            } catch (e) {
+                                // If any error occurs during parsing, use the default
+                                formattedDateOfReturn = "Not Returned";
+                            }
+                        }
+
                         const row = document.createElement("tr");
                         row.innerHTML = `
                             <td>${loan.loanID}</td>
                             <td>${loan.bookTitle}</td>
                             <td>${loan.patronName}</td>
-                            <td>${loan.loanDate}</td>
-                            <td>${loan.returnDate || 'Not Returned'}</td>
+                            <td>${formattedDateOfLoan}</td>
+                            <td>${formattedDateOfReturn}</td>
                         `;
                         table.appendChild(row);
                     });
@@ -185,6 +217,9 @@
 
                     bookDropdown.innerHTML = '<option value="">Select a Book</option>';
                     updateBookDropdown.innerHTML = '<option value="">Select a Book</option>';
+
+                    // Sort alphabetically by book title
+                    data.sort((a, b) => a.title.localeCompare(b.title) );
 
                     data.forEach(book => {
                         const option = document.createElement('option');
@@ -208,10 +243,17 @@
                     patronDropdown.innerHTML = '<option value="">Select a Patron</option>';
                     updatePatronDropdown.innerHTML = '<option value="">Select a Patron</option>';
 
+                    // Sort alphabetically by patron first name
+                    data.sort((a, b) => a.firstName.localeCompare(b.firstName) );
+
                     data.forEach(patron => {
+
+                        const date = new Date(patron.membershipDate);
+
+                        const formattedDate = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`
                         const option = document.createElement('option');
                         option.value = patron.patronID;
-                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${patron.membershipDate})`;
+                        option.textContent = `${patron.firstName} ${patron.lastName} (Joined: ${formattedDate})`;
                         patronDropdown.appendChild(option);
                         updatePatronDropdown.appendChild(option.cloneNode(true));
                     });
@@ -232,6 +274,9 @@
                         document.getElementById('delete-loan-dropdown')
                     ];
 
+                    // Sort alphabetically by patronName
+                    data.sort((a, b) => a.patronName.localeCompare(b.patronName) );
+
                     // Populate each dropdown
                     loanDropdowns.forEach(dropdown => {
                         if (dropdown) {
@@ -239,7 +284,7 @@
                             data.forEach(loan => {
                                 const option = document.createElement('option');
                                 option.value = loan.loanID;
-                                option.textContent = `Loan #${loan.loanID}: ${loan.bookTitle} - ${loan.patronName}`;
+                                option.textContent = `${loan.patronName} - ${loan.bookTitle} - (Loan #${loan.loanID})`;
                                 dropdown.appendChild(option);
                             });
                         }
@@ -330,11 +375,28 @@
         });
 
         document.getElementById("update-loan-date-form").addEventListener("submit", function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            const formData = new FormData(event.target);
+    const formData = new FormData(event.target);
+    const loanID = formData.get("loanID");
+    const newLoanDate = new Date(formData.get("newLoanDate"));
+
+    // Check if this loan has a return date, and if so, ensure loan date is before return date
+    fetch(`/loan-details/${loanID}`)
+        .then(response => response.json())
+        .then(loanDetails => {
+            if (loanDetails.returnDate) {
+                const returnDate = new Date(loanDetails.returnDate);
+
+                if (newLoanDate > returnDate) {
+                    alert("Loan date must be before return date.");
+                    return;
+                }
+            }
+
+            // If validation passes, update the loan date
             const updateData = {
-                loanID: formData.get("loanID"),
+                loanID: loanID,
                 newLoanDate: formData.get("newLoanDate")
             };
 
@@ -354,14 +416,31 @@
                 }
             })
             .catch(error => console.error("Error:", error));
-        });
+        })
+        .catch(error => console.error("Error fetching loan details:", error));
+});
 
         document.getElementById("update-return-date-form").addEventListener("submit", function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            const formData = new FormData(event.target);
+    const formData = new FormData(event.target);
+    const loanID = formData.get("loanID");
+    const newReturnDate = new Date(formData.get("newReturnDate"));
+
+    // Fetch loan details to check loan date
+    fetch(`/loan-details/${loanID}`)
+        .then(response => response.json())
+        .then(loanDetails => {
+            const loanDate = new Date(loanDetails.loanDate);
+
+            if (newReturnDate < loanDate) {
+                alert("Return date must be after loan date.");
+                return;
+            }
+
+            // If validation passes, update the return date
             const updateData = {
-                loanID: formData.get("loanID"),
+                loanID: loanID,
                 newReturnDate: formData.get("newReturnDate")
             };
 
@@ -381,7 +460,9 @@
                 }
             })
             .catch(error => console.error("Error:", error));
-        });
+        })
+        .catch(error => console.error("Error fetching loan details:", error));
+});
 
         document.getElementById("delete-loan-form").addEventListener("submit", function (event) {
     event.preventDefault();

@@ -45,7 +45,7 @@ VALUES
 SELECT * FROM Authors;
 
 -- Retrieve Authors for Books Form Dropdown
-SELECT authorID, firstName, lastName FROM Authors;
+SELECT authorID, firstName, lastName, birthYear FROM Authors;
 
 /******************************************************
 PATRONS TABLE

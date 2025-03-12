@@ -36,7 +36,7 @@ app.get("/books-dropdown", (req, res) => {
 
 //  Retrieve authors for dropdown
 app.get("/authors-dropdown", (req, res) => {
-    pool.query("SELECT authorID, firstName, lastName FROM Authors", (error, results) => {
+    pool.query("SELECT authorID, firstName, lastName, birthYear FROM Authors", (error, results) => {
         if (error) {
             console.error("Error retrieving authors for dropdown:", error);
             res.status(500).json({ error: "Database error." });
@@ -225,6 +225,23 @@ app.post("/delete-loan", (req, res) => {
           res.status(500).json({ error: "Database error." });
       } else {
           res.json({ success: true });
+      }
+  });
+});
+
+// Get details for a specific loan (for validation)
+app.get("/loan-details/:loanID", (req, res) => {
+  const loanID = req.params.loanID;
+  const query = "SELECT loanDate, returnDate FROM Loans WHERE loanID = ?";
+
+  pool.query(query, [loanID], (error, results) => {
+      if (error) {
+          console.error("Error retrieving loan details:", error);
+          res.status(500).json({ error: "Database error." });
+      } else if (results.length === 0) {
+          res.status(404).json({ error: "Loan not found." });
+      } else {
+          res.json(results[0]);
       }
   });
 });
