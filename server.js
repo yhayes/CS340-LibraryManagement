@@ -1,3 +1,8 @@
+// Citation for the following Express.js server setup and CRUD route structure:
+// Date: 03/13/2025
+// Based on: CS340 Node.js Starter App Guide
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 const express = require("express");
 const path = require("path");
 const pool = require("./db-connector");
